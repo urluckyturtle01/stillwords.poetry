@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "stillwords",
   description: "poetry for the space before words",
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
