@@ -14,20 +14,20 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
       onClick={onClose}
     >
       <div 
-        className="bg-stone-50 rounded-sm max-w-md w-full p-6 md:p-8 relative animate-slideUp shadow-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-stone-50 rounded-sm max-w-md w-full p-5 md:p-6 relative animate-slideUp shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-stone-400 hover:text-stone-700 transition-colors"
+          className="absolute top-3 right-3 text-stone-400 hover:text-stone-700 transition-colors"
           aria-label="Close"
         >
-          <X size={20} strokeWidth={1.5} />
+          <X size={18} strokeWidth={1.5} />
         </button>
 
         {/* Book Cover */}
-        <div className="w-full max-w-[200px] mx-auto mb-6">
+        <div className="w-full max-w-[200px] md:max-w-[160px] mx-auto mb-3 md:mb-4">
           <img 
             src="/book-cover.jpg" 
             alt="Quiet enough book cover"
@@ -36,17 +36,17 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl md:text-2xl text-stone-800 mb-1">
+        <h2 className="text-xl md:text-2xl text-stone-800 mb-0.5">
           Quiet enough
         </h2>
 
         {/* Subtitle */}
-        <p className="text-sm md:text-base text-stone-500 mb-4 italic">
+        <p className="text-lg md:text-lg text-stone-500 mb-2.5 md:mb-3 italic">
           Seven pieces of stillness
         </p>
 
         {/* Description */}
-        <p className="text-sm md:text-base text-stone-600 mb-6 leading-relaxed">
+        <p className="text-md md:text-md text-stone-600 mb-3 md:mb-4 leading-relaxed">
           These seven pieces were written slowly during moments when nothing needed to be fixed, achieved, or explained. They do not offer lessons or conclusions. They stay with uncertainty, stillness, and the subtle work of becoming.
         </p>
 
