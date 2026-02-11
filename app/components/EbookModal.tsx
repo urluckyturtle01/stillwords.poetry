@@ -27,7 +27,7 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
         </button>
 
         {/* Book Cover */}
-        <div className="w-full max-w-[200px] md:max-w-[160px] mx-auto mb-3 md:mb-4">
+        <div className="w-full max-w-[190px] md:max-w-[160px] mx-auto mb-3 md:mb-4">
           <img 
             src="/book-cover.jpg" 
             alt="Quiet enough book cover"
@@ -36,18 +36,18 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
         </div>
 
         {/* Title */}
-        <h2 className="text-xl md:text-2xl text-stone-800 mb-0.5">
+        <h2 className="text-2xl md:text-2xl text-stone-800 mb-0.5">
           Quiet enough
         </h2>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-lg text-stone-500 mb-2.5 md:mb-3 italic">
-          Seven pieces of stillness
+        <p className="text-md md:text-lg text-stone-500 mb-2.5 md:mb-3 italic">
+          seven pieces of stillness
         </p>
 
         {/* Description */}
-        <p className="text-md md:text-md text-stone-600 mb-3 md:mb-4 leading-relaxed">
-          These seven pieces were written slowly during moments when nothing needed to be fixed, achieved, or explained. They do not offer lessons or conclusions. They stay with uncertainty, stillness, and the subtle work of becoming.
+        <p className="text-sm md:text-md text-stone-600 mb-4 md:mb-4 leading-relaxed">
+          these seven pieces were written slowly during moments when nothing needed to be fixed, achieved, or explained. They do not offer lessons or conclusions. They stay with uncertainty, stillness, and the subtle work of becoming.
         </p>
 
         {/* Buy Button */}
