@@ -1,7 +1,5 @@
 import { Instagram, Youtube } from "lucide-react";
 
-const basePath = process.env.NODE_ENV === 'production' ? '/stillwords.poetry' : '';
-
 export default function Home() {
   const links = [
     { text: "Quiet enough | poetry ebook", href: "https://amzn.in/d/06QupJhP", target: "_blank" },
@@ -16,7 +14,7 @@ export default function Home() {
       <div className="w-full max-w-[600px] flex flex-col">
         {/* Site Logo */}
         <img 
-          src={`${basePath}/logo.svg`}
+          src="/logo.svg"
           alt="stillwords" 
           className="w-24 md:w-32 mb-4"
         />
