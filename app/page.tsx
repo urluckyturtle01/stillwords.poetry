@@ -16,7 +16,7 @@ export default function Home() {
         <img 
           src="/logo.svg"
           alt="stillwords" 
-          className="w-24 md:w-32 mb-4"
+          className="w-32 md:w-40 mb-4"
         />
 
         {/* Tagline */}
