@@ -1,10 +1,14 @@
+'use client';
+
 import { Instagram, Youtube } from "lucide-react";
+import { useState } from "react";
+import EbookModal from "./components/EbookModal";
+import LinkButton from "./components/LinkButton";
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const links = [
-    { text: "Quiet enough | poetry ebook", href: "https://amzn.in/d/06QupJhP", target: "_blank" },
-    
-    
     { text: "Substack", href: "https://stillwordspoetry.substack.com/", target: "_blank" },
     //{ text: "About", href: "/about" }
   ];
@@ -48,17 +52,26 @@ export default function Home() {
 
         {/* Links */}
         <nav className="flex flex-col space-y-6 md:space-y-8 mb-20 md:mb-24">
+          <LinkButton onClick={() => setIsModalOpen(true)}>
+            Quiet enough | poetry ebook
+          </LinkButton>
+          
           {links.map((link) => (
-            <a
+            <LinkButton
               key={link.text}
               href={link.href}
               target={link.target}
-              className="text-lg md:text-xl text-stone-700 hover:text-stone-900 hover:opacity-70 transition-opacity duration-150"
             >
               {link.text}
-            </a>
+            </LinkButton>
           ))}
         </nav>
+
+        {/* Modal */}
+        <EbookModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
 
         {/* Footer */}
         <footer className="text-sm text-stone-400 mt-auto">
