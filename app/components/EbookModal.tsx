@@ -55,7 +55,8 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
         <p className="text-lg md:text-md text-stone-600 leading-relaxed">
           $2.49</p>
         <a
-          href="https://amzn.in/d/06QupJhP"
+          href="https://www.amzn.com/dp/B0GL9L95ZL"
+          
           target="_blank"
           rel="noopener noreferrer"
           className="block text-center py-2 px-4 bg-stone-900 text-stone-50 text-sm md:text-sm hover:bg-stone-800 transition-colors duration-150"
