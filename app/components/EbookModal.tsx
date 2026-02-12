@@ -1,11 +1,71 @@
+'use client';
+
 import { X } from "lucide-react";
+import { useState } from "react";
 
 interface EbookModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const amazonData = {
+  us: { 
+    link: "https://www.amzn.com/dp/B0GL9L95ZL", 
+    price: "$2.49" 
+  },
+  india: { 
+    link: "https://www.amazon.in/dp/B0GL9L95ZL", 
+    price: "₹129" 
+  },
+  uk: { 
+    link: "https://www.amazon.co.uk/dp/B0GL9L95ZL", 
+    price: "£1.99" 
+  },
+  germany: { 
+    link: "https://www.amazon.de/dp/B0GL9L95ZL", 
+    price: "€2.10" 
+  },
+  france: { 
+    link: "https://www.amazon.fr/dp/B0GL9L95ZL", 
+    price: "€2.10" 
+  },
+  spain: { 
+    link: "https://www.amazon.es/dp/B0GL9L95ZL", 
+    price: "€2.10" 
+  },
+  italy: { 
+    link: "https://www.amazon.it/dp/B0GL9L95ZL", 
+    price: "€2.10" 
+  },
+  netherlands: { 
+    link: "https://www.amazon.nl/dp/B0GL9L95ZL", 
+    price: "€2.10" 
+  },
+  japan: { 
+    link: "https://www.amazon.co.jp/dp/B0GL9L95ZL", 
+    price: "¥382" 
+  },
+  brazil: { 
+    link: "https://www.amazon.com.br/dp/B0GL9L95ZL", 
+    price: "R$8.00" 
+  },
+  canada: { 
+    link: "https://www.amazon.ca/dp/B0GL9L95ZL", 
+    price: "$3.38 CAD" 
+  },
+  mexico: { 
+    link: "https://www.amazon.com.mx/dp/B0GL9L95ZL", 
+    price: "$42.82 MXN" 
+  },
+  australia: { 
+    link: "https://www.amazon.com.au/dp/B0GL9L95ZL", 
+    price: "$3.49 AUD" 
+  },
+};
+
 export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
+  const [selectedCountry, setSelectedCountry] = useState("");
+
   if (!isOpen) return null;
 
   return (
@@ -50,16 +110,49 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
           these seven pieces were written slowly during moments when nothing needed to be fixed, achieved, or explained. They do not offer lessons or conclusions. They stay with uncertainty, stillness, and the subtle work of becoming.
         </p>
 
+        {/* Country Selector */}
+        <div className="mb-3">
+          <select
+            value={selectedCountry}
+            onChange={(e) => setSelectedCountry(e.target.value)}
+            className="w-full py-2 px-3 text-sm text-stone-700 border border-stone-300 focus:outline-none focus:border-stone-500 transition-colors"
+          >
+            <option value="">Select your country</option>
+            <option value="us">United States</option>
+            <option value="india">India</option>
+            <option value="uk">United Kingdom</option>
+            <option value="germany">Germany</option>
+            <option value="france">France</option>
+            <option value="spain">Spain</option>
+            <option value="italy">Italy</option>
+            <option value="netherlands">Netherlands</option>
+            <option value="japan">Japan</option>
+            <option value="brazil">Brazil</option>
+            <option value="canada">Canada</option>
+            <option value="mexico">Mexico</option>
+            <option value="australia">Australia</option>
+          </select>
+        </div>
+
         {/* Buy Button */}
         <div className="flex justify-between items-center vertical-center"> 
         <p className="text-lg md:text-md text-stone-600 leading-relaxed">
-          $2.49</p>
+          {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].price : "—"}
+        </p>
         <a
-          href="https://www.amzn.com/dp/B0GL9L95ZL"
-          
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block text-center py-2 px-4 bg-stone-900 text-stone-50 text-sm md:text-sm hover:bg-stone-800 transition-colors duration-150"
+          href={selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].link : "#"}
+          target={selectedCountry ? "_blank" : "_self"}
+          rel={selectedCountry ? "noopener noreferrer" : ""}
+          onClick={(e) => {
+            if (!selectedCountry) {
+              e.preventDefault();
+            }
+          }}
+          className={`block text-center py-2 px-4 text-sm transition-colors duration-150 ${
+            selectedCountry
+              ? "bg-stone-900 text-stone-50 hover:bg-stone-800 cursor-pointer"
+              : "bg-stone-300 text-stone-500 cursor-not-allowed"
+          }`}
         >
           Buy on Amazon
         </a>
