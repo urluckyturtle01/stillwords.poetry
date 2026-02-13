@@ -107,7 +107,7 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
 
         {/* Description */}
         <p className="text-sm md:text-md text-stone-600 mb-4 md:mb-4 leading-relaxed">
-          these seven pieces were written slowly during moments when nothing needed to be fixed, achieved, or explained. They do not offer lessons or conclusions. They stay with uncertainty, stillness, and the subtle work of becoming.
+          these seven pieces were written slowly during moments when nothing needed to be fixed, achieved, or explained. they do not offer lessons or conclusions. they stay with uncertainty, stillness, and the subtle work of becoming.
         </p>
 
         {/* Country Selector */}
