@@ -10,7 +10,7 @@ export default function Home() {
 
   const links = [
     { text: "Substack", href: "https://stillwordspoetry.substack.com/", target: "_blank" },
-    //{ text: "About", href: "/about" }
+    { text: "About", href: "/about" }
   ];
 
   return (
@@ -64,6 +64,8 @@ export default function Home() {
             >
               {link.text}
             </LinkButton>
+
+
           ))}
         </nav>
 
