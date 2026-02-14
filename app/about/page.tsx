@@ -21,7 +21,7 @@ export default function About() {
         />
 
         {/* About Text */}
-        <div className="text-md md:text-md text-stone-600 leading-relaxed space-y-6 mb-20">
+        <div className="text-md md:text-md text-stone-600 leading-relaxed space-y-2 mb-20">
           <p>soft lines.</p>
           
           <p>
