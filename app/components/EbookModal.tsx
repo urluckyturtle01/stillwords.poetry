@@ -150,11 +150,9 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
         {/* Buy Button */}
         <div className="flex justify-between items-center vertical-center"> 
         <p className="text-md md:text-md text-stone-600 leading-relaxed">
-          ebook: {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].price : "—"}
+          {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].price : "—"} | {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].paperback : "—"}
         </p>
-        <p className="text-md md:text-md text-stone-600 leading-relaxed">
-          paperback: {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].paperback : "—"}
-        </p>
+       
         <a
           href={selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].link : "#"}
           target={selectedCountry ? "_blank" : "_self"}
