@@ -17,7 +17,7 @@ export default function About() {
         <img 
           src="/logo.svg"
           alt="stillwords" 
-          className="w-32 md:w-40 mb-12"
+          className="w-32 md:w-32 mb-12"
         />
 
         {/* About Text */}

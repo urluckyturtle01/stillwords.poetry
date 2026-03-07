@@ -53,7 +53,7 @@ export default function Home() {
         {/* Links */}
         <nav className="flex flex-col space-y-6 md:space-y-8 mb-20 md:mb-24">
           <LinkButton onClick={() => setIsModalOpen(true)}>
-            Quiet enough | poetry ebook
+            Quiet enough | poetry book
           </LinkButton>
           
           {links.map((link) => (
