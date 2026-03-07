@@ -11,55 +11,68 @@ interface EbookModalProps {
 const amazonData = {
   us: { 
     link: "https://www.amzn.com/dp/B0GL9L95ZL", 
-    price: "$2.49" 
+    price: "$2.49",
+    paperback: "$4.60"
   },
   india: { 
     link: "https://www.amazon.in/dp/B0GL9L95ZL", 
-    price: "₹129" 
+    price: "₹129",
+    paperback: "—"
   },
   uk: { 
     link: "https://www.amazon.co.uk/dp/B0GL9L95ZL", 
-    price: "£1.99" 
+    price: "£1.99",
+    paperback: "£3.86"
   },
   germany: { 
     link: "https://www.amazon.de/dp/B0GL9L95ZL", 
-    price: "€2.10" 
+    price: "€2.10",
+    paperback: "€4.10"
   },
   france: { 
     link: "https://www.amazon.fr/dp/B0GL9L95ZL", 
-    price: "€2.10" 
+    price: "€2.10",
+    paperback: "€4.10"
   },
   spain: { 
     link: "https://www.amazon.es/dp/B0GL9L95ZL", 
-    price: "€2.10" 
+    price: "€2.10",
+    paperback: "€4.10"
   },
   italy: { 
     link: "https://www.amazon.it/dp/B0GL9L95ZL", 
-    price: "€2.10" 
+    price: "€2.10",
+    paperback: "€4.10"
   },
   netherlands: { 
     link: "https://www.amazon.nl/dp/B0GL9L95ZL", 
-    price: "€2.10" 
+    price: "€2.10",
+    paperback: "€4.10"
   },
   japan: { 
     link: "https://www.amazon.co.jp/dp/B0GL9L95ZL", 
-    price: "¥382" 
+    price: "¥382",
+    paperback: "¥844"
   },
   brazil: { 
     link: "https://www.amazon.com.br/dp/B0GL9L95ZL", 
-    price: "R$8.00" 
+    price: "R$8.00",
+    paperback: "—"
   },
   canada: { 
     link: "https://www.amazon.ca/dp/B0GL9L95ZL", 
-    price: "$3.38 CAD" 
+    price: "$3.38 CAD",
+    paperback: "$6.29 CAD"
   },
   mexico: { 
     link: "https://www.amazon.com.mx/dp/B0GL9L95ZL", 
-    price: "$42.82 MXN" 
+    price: "$42.82 MXN",
+    paperback: "—"
   },
   australia: { 
     link: "https://www.amazon.com.au/dp/B0GL9L95ZL", 
-    price: "$3.49 AUD" 
+    price: "$3.49 AUD",
+    paperback: "$9.48 AUD"
   },
 };
 
@@ -136,8 +149,11 @@ export default function EbookModal({ isOpen, onClose }: EbookModalProps) {
 
         {/* Buy Button */}
         <div className="flex justify-between items-center vertical-center"> 
-        <p className="text-lg md:text-md text-stone-600 leading-relaxed">
-          {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].price : "—"}
+        <p className="text-md md:text-md text-stone-600 leading-relaxed">
+          ebook: {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].price : "—"}
+        </p>
+        <p className="text-md md:text-md text-stone-600 leading-relaxed">
+          paperback: {selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].paperback : "—"}
         </p>
         <a
           href={selectedCountry ? amazonData[selectedCountry as keyof typeof amazonData].link : "#"}
