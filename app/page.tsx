@@ -10,6 +10,7 @@ export default function Home() {
 
   const links = [
     { text: "Substack", href: "https://stillwordspoetry.substack.com/", target: "_blank" },
+    { text: "Buy me a coffee", href: "https://buymeacoffee.com/stillwords.poetry", target: "_blank" },
     { text: "About", href: "/about" }
   ];
 
