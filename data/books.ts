@@ -26,11 +26,11 @@ export function amazonSearchUrl(title: string, author: string): string {
 
 export const currentlyReading: CurrentlyReadingBook[] = [
   {
-    title: "crime and punishment",
-    author: "fyodor dostoevsky",
-    goodreadsRating: "4.29",
-    amazonUrl: amazonSearchUrl("Crime and Punishment", "Fyodor Dostoevsky"),
-    tags: ["fiction", "philosophy", "inner life"],
+    title: "On cats",
+    author: "charles bukowski",
+    goodreadsRating: "3.7",
+    amazonUrl: amazonSearchUrl("On Cats", "Charles Bukowski"),
+    tags: ["poetry", "inner life", "philosophy"],
   },
 ];
 
@@ -40,6 +40,15 @@ export const currentlyReading: CurrentlyReadingBook[] = [
  */
 export const finished: FinishedBook[] = [
   // -------- GENERAL --------
+  {
+    title: "crime and punishment",
+    author: "fyodor dostoevsky",
+    goodreadsRating: "4.29",
+    amazonUrl: amazonSearchUrl("Crime and Punishment", "Fyodor Dostoevsky"),
+    myRating: "5/5",
+    finishedOn: "jun 5, 2024",
+    tags: ["fiction", "philosophy", "inner life"],
+  },
   {
     title: "man's search for meaning",
     author: "viktor e. frankl",
