@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "protocol-knowledge": {
+            "transport": "sse",
+            "url": "http://84.32.32.90:8765/sse"
+        },
+        "topledger-api": {
+            "transport": "sse",
+            "url": "http://68.219.65.168:8765/sse",
+            "headers": {
+                "x-api-key": "tl_sk_2a2bb783b9639eed3ca6a48e6056b0169aba9ce4c0f011c4"
+            }
+        }
+    }
+}
