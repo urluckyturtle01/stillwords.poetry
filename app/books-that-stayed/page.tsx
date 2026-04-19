@@ -1,8 +1,11 @@
 "use client";
 
-import { ArrowLeft, Filter } from "lucide-react";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import Signature from "../components/Signature";
+import SiteFooter from "../components/SiteFooter";
+import WatercolorBackdrop from "../components/WatercolorBackdrop";
 import { currentlyReading, finished } from "@/data/books";
 import { bookTags, type BookTag } from "@/data/tags";
 
@@ -67,272 +70,258 @@ export default function BooksThatStayedPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center px-6 py-16">
-      <div className="w-full max-w-[600px] flex flex-col">
-        <Link
-          href="/"
-          className="text-stone-400 hover:text-stone-700 transition-opacity duration-150 mb-10 w-fit"
-        >
-          <ArrowLeft size={20} strokeWidth={1.5} />
+    <main className="relative min-h-screen w-full text-ink">
+      <WatercolorBackdrop variant={4} intensity={0.4} fixed />
+
+      <header className="absolute top-0 left-0 right-0 z-20 px-6 md:px-12 pt-6 md:pt-8 flex items-center justify-between">
+        <Link href="/" aria-label="back to stillwords home" className="block">
+          <img src="/logo.svg" alt="stillwords" className="w-24 md:w-28 opacity-90" />
         </Link>
+        <Signature />
+      </header>
 
-        <img
-          src="/logo.svg"
-          alt="stillwords"
-          className="w-24 md:w-34 mb-8"
-        />
-
-        <h1 className="text-2xl md:text-3xl text-stone-800 mb-3 tracking-tight">
-          books that stayed
-        </h1>
-
-        <p className="text-base text-stone-500 mb-12 md:mb-14 max-w-lg">
-          a quiet reading archive — not a list to finish, only what lingers.
-        </p>
-
-        {/* Tabs + filter (dropdown) */}
-        <div className="relative mb-12 md:mb-14">
-          <div className="flex items-end justify-between gap-4 border-b border-stone-200">
-            <div
-              className="flex gap-0 min-w-0"
-              role="tablist"
-              aria-label="reading sections"
-            >
-              <button
-                type="button"
-                role="tab"
-                aria-selected={tab === "reading"}
-                id="tab-reading"
-                aria-controls="panel-reading"
-                onClick={() => setTab("reading")}
-                className={`text-sm md:text-base text-left pb-2.5 px-1 -mb-px mr-6 md:mr-8 border-b-2 transition-colors duration-150 ${
-                  tab === "reading"
-                    ? "text-stone-800 border-stone-800"
-                    : "text-stone-400 border-transparent hover:text-stone-600 hover:border-stone-300"
-                }`}
-              >
-                <span className="inline-flex items-baseline gap-1.5">
-                  <span>currently reading</span>
-                  <span
-                    className={`tabular-nums text-xs font-normal ${
-                      tab === "reading"
-                        ? "text-stone-500"
-                        : "text-stone-400"
-                    }`}
-                  >
-                    ({filteredReading.length})
-                  </span>
-                </span>
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={tab === "finished"}
-                id="tab-finished"
-                aria-controls="panel-finished"
-                onClick={() => setTab("finished")}
-                className={`text-sm md:text-base text-left pb-2.5 px-1 -mb-px border-b-2 transition-colors duration-150 ${
-                  tab === "finished"
-                    ? "text-stone-800 border-stone-800"
-                    : "text-stone-400 border-transparent hover:text-stone-600 hover:border-stone-300"
-                }`}
-              >
-                <span className="inline-flex items-baseline gap-1.5">
-                  <span>finished</span>
-                  <span
-                    className={`tabular-nums text-xs font-normal ${
-                      tab === "finished"
-                        ? "text-stone-500"
-                        : "text-stone-400"
-                    }`}
-                  >
-                    ({filteredFinished.length})
-                  </span>
-                </span>
-              </button>
-            </div>
-
-            <div className="relative flex-shrink-0 self-end" ref={filterWrapRef}>
-              <button
-                type="button"
-                aria-expanded={filterOpen}
-                aria-haspopup="dialog"
-                aria-controls="tag-filter-panel"
-                aria-label="Filter by tags"
-                onClick={() => setFilterOpen((o) => !o)}
-                className={`pb-2.5 px-1 -mb-px text-stone-400 hover:text-stone-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-300 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50 rounded-sm ${
-                  selectedTags.size > 0 ? "text-stone-700" : ""
-                }`}
-              >
-                <Filter size={18} strokeWidth={1.5} className="block" aria-hidden />
-              </button>
-
-              {filterOpen && (
-                <div
-                  id="tag-filter-panel"
-                  role="group"
-                  aria-label="Filter by tags"
-                  className="absolute right-0 top-full z-50 mt-2 w-[min(100vw-2rem,17rem)] max-h-[min(70vh,20rem)] overflow-y-auto border border-stone-200/90 bg-stone-50 py-3 pl-3 pr-2 shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
-                >
-                  <p className="pr-1 text-[11px] text-stone-400 tracking-wide mb-2.5">
-                    tags · any match
-                  </p>
-                  <ul className="m-0 list-none space-y-1.5 p-0 pr-1">
-                    {bookTags.map((tag) => {
-                      const on = selectedTags.has(tag);
-                      return (
-                        <li key={tag}>
-                          <label className="flex cursor-pointer items-center gap-2.5 select-none py-0.5">
-                            <input
-                              type="checkbox"
-                              checked={on}
-                              onChange={() => toggleTag(tag)}
-                              className="h-3.5 w-3.5 shrink-0 rounded-sm border-stone-300 text-stone-800 focus:ring-1 focus:ring-stone-400 focus:ring-offset-0"
-                            />
-                            <span
-                              className={`text-sm leading-snug ${
-                                on ? "text-stone-800" : "text-stone-500"
-                              }`}
-                            >
-                              {tag}
-                            </span>
-                          </label>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  {selectedTags.size > 0 && (
-                    <div className="mt-3 border-t border-stone-200/80 pt-2.5 pr-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          clearTags();
-                        }}
-                        className="text-xs text-stone-400 hover:text-stone-600 underline underline-offset-4 decoration-stone-300/80"
-                      >
-                        clear all
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+      <section className="relative px-6 md:px-12 pt-32 md:pt-40 pb-12">
+        <div className="mx-auto max-w-3xl">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-whisper mb-6">
+            books that stayed
+          </p>
+          <h1 className="font-display italic text-4xl md:text-5xl text-ink leading-[1.1] mb-6 text-balance">
+            a quiet reading archive.
+          </h1>
+          <p className="font-poem text-[19px] md:text-xl leading-[1.7] text-ink/80 max-w-[55ch] text-pretty">
+            not a list to finish — only what lingers.
+          </p>
         </div>
+      </section>
 
-        {/* Panel: currently reading */}
-        <div
-          role="tabpanel"
-          id="panel-reading"
-          aria-labelledby="tab-reading"
-          hidden={tab !== "reading"}
-          className={tab !== "reading" ? "hidden" : ""}
-        >
-          <ul className="m-0 p-0 list-none">
-            {filteredReading.length === 0 && (
-              <li className="text-sm text-stone-400 py-2">
-                nothing matches this filter.
-              </li>
-            )}
-            {filteredReading.map((book, i) => (
-              <li
-                key={`${book.title}-${book.author}`}
-                className={`border-b border-stone-200/90 pb-10 md:pb-12 ${
-                  i === 0 ? "" : "pt-10 md:pt-12"
-                } last:border-b-0`}
+      <section className="relative px-6 md:px-12 pb-24">
+        <div className="mx-auto max-w-3xl">
+          {/* Tabs + filter */}
+          <div className="relative mb-12 md:mb-16">
+            <div className="flex items-end justify-between gap-4 border-b border-ink/15">
+              <div
+                className="flex gap-0 min-w-0"
+                role="tablist"
+                aria-label="reading sections"
               >
-                <p className="text-[11px] md:text-xs text-stone-400 tracking-[0.02em] leading-relaxed mb-3 md:mb-4">
-                  {book.tags.join(" · ")}
-                </p>
-                <p className="text-lg md:text-xl text-stone-800 leading-snug mb-2.5">
-                  {book.title}
-                  <span className="text-stone-400 font-normal"> — </span>
-                  <span className="text-stone-500 text-base md:text-lg font-normal">
-                    {book.author}
-                  </span>
-                </p>
-                <p className="text-sm text-stone-400 leading-relaxed">
-                  {book.goodreadsRating} on goodreads
-                  <span className="text-stone-300 mx-2 select-none">·</span>
-                  {/* <a
-                    href={book.amazonUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-stone-500 hover:text-stone-800 hover:underline underline-offset-[5px] decoration-stone-300/80 focus:outline-none focus-visible:underline"
-                  >
-                    amazon →
-                  </a>
-                  */}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Panel: finished */}
-        <div
-          role="tabpanel"
-          id="panel-finished"
-          aria-labelledby="tab-finished"
-          hidden={tab !== "finished"}
-          className={tab !== "finished" ? "hidden" : ""}
-        >
-          <ul className="m-0 p-0 list-none">
-            {filteredFinished.length === 0 && (
-              <li className="text-sm text-stone-400 py-2">
-                nothing matches this filter.
-              </li>
-            )}
-            {filteredFinished.map((book, i) => (
-              <li
-                key={`${book.title}-${book.author}`}
-                className={`border-b border-stone-200/90 pb-10 md:pb-12 ${
-                  i === 0 ? "" : "pt-10 md:pt-12"
-                } last:border-b-0`}
-              >
-                <p className="text-[11px] md:text-xs text-stone-400 tracking-[0.02em] leading-relaxed mb-3 md:mb-4">
-                  {book.tags.join(" · ")}
-                </p>
-                <p className="text-lg md:text-xl text-stone-800 leading-snug mb-2.5">
-                  {book.title}
-                  <span className="text-stone-400 font-normal"> — </span>
-                  <span className="text-stone-500 text-base md:text-lg font-normal">
-                    {book.author}
-                  </span>
-                </p>
-                <p className="text-sm text-stone-400 leading-relaxed mb-1">
-                  {book.goodreadsRating} on goodreads
-                  
-                </p>
-                <p
-                  className={`text-sm text-stone-400 leading-relaxed ${
-                    book.reflection ? "mb-4 md:mb-5" : "mb-0"
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === "reading"}
+                  id="tab-reading"
+                  aria-controls="panel-reading"
+                  onClick={() => setTab("reading")}
+                  className={`text-sm md:text-[15px] text-left pb-3 px-1 -mb-px mr-7 md:mr-10 border-b-2 transition-colors duration-200 uppercase tracking-[0.18em] ${
+                    tab === "reading"
+                      ? "text-ink border-ink"
+                      : "text-whisper border-transparent hover:text-ink/70 hover:border-ink/30"
                   }`}
                 >
-                  {/* <a
-                    href={book.amazonUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-stone-500 hover:text-stone-800 hover:underline underline-offset-[5px] decoration-stone-300/80 focus:outline-none focus-visible:underline"
-                  >
-                    amazon →
-                  </a>
-                  */}
-                </p>
-                {book.reflection ? (
-                  <p className="text-sm md:text-[15px] text-stone-500 italic leading-[1.65] max-w-[52ch]">
-                    {book.reflection}
-                  </p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </div>
+                  <span className="inline-flex items-baseline gap-1.5">
+                    <span>currently reading</span>
+                    <span
+                      className={`tabular-nums text-[11px] tracking-normal normal-case ${
+                        tab === "reading" ? "text-whisper" : "text-whisper/70"
+                      }`}
+                    >
+                      ({filteredReading.length})
+                    </span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === "finished"}
+                  id="tab-finished"
+                  aria-controls="panel-finished"
+                  onClick={() => setTab("finished")}
+                  className={`text-sm md:text-[15px] text-left pb-3 px-1 -mb-px border-b-2 transition-colors duration-200 uppercase tracking-[0.18em] ${
+                    tab === "finished"
+                      ? "text-ink border-ink"
+                      : "text-whisper border-transparent hover:text-ink/70 hover:border-ink/30"
+                  }`}
+                >
+                  <span className="inline-flex items-baseline gap-1.5">
+                    <span>finished</span>
+                    <span
+                      className={`tabular-nums text-[11px] tracking-normal normal-case ${
+                        tab === "finished" ? "text-whisper" : "text-whisper/70"
+                      }`}
+                    >
+                      ({filteredFinished.length})
+                    </span>
+                  </span>
+                </button>
+              </div>
 
-        <footer className="text-sm text-stone-400 mt-24 md:mt-28">
-          © {new Date().getFullYear()} stillwords
-        </footer>
-      </div>
+              <div className="relative flex-shrink-0 self-end" ref={filterWrapRef}>
+                <button
+                  type="button"
+                  aria-expanded={filterOpen}
+                  aria-haspopup="dialog"
+                  aria-controls="tag-filter-panel"
+                  onClick={() => setFilterOpen((o) => !o)}
+                  className={`pb-3 px-1 -mb-px text-[12px] uppercase tracking-[0.22em] transition-colors duration-200 ${
+                    selectedTags.size > 0 || filterOpen
+                      ? "text-ink"
+                      : "text-whisper hover:text-ink/80"
+                  }`}
+                >
+                  filter
+                  {selectedTags.size > 0 && (
+                    <span className="ml-1 normal-case tracking-normal text-whisper/80">
+                      ({selectedTags.size})
+                    </span>
+                  )}
+                </button>
+
+                {filterOpen && (
+                  <div
+                    id="tag-filter-panel"
+                    role="group"
+                    aria-label="filter by tags"
+                    className="absolute right-0 top-full z-50 mt-2 w-[min(100vw-2rem,18rem)] max-h-[min(70vh,22rem)] overflow-y-auto border border-ink/15 bg-paper py-3 pl-3 pr-2 shadow-[0_12px_40px_rgba(31,27,22,0.10)]"
+                  >
+                    <p className="pr-1 text-[10px] uppercase tracking-[0.22em] text-whisper mb-3">
+                      tags · any match
+                    </p>
+                    <ul className="m-0 list-none space-y-1.5 p-0 pr-1">
+                      {bookTags.map((tag) => {
+                        const on = selectedTags.has(tag);
+                        return (
+                          <li key={tag}>
+                            <label className="flex cursor-pointer items-center gap-2.5 select-none py-0.5">
+                              <input
+                                type="checkbox"
+                                checked={on}
+                                onChange={() => toggleTag(tag)}
+                                className="h-3.5 w-3.5 shrink-0 rounded-sm border-ink/30 text-ink focus:ring-1 focus:ring-mist focus:ring-offset-0"
+                              />
+                              <span
+                                className={`text-sm leading-snug ${
+                                  on ? "text-ink" : "text-whisper"
+                                }`}
+                              >
+                                {tag}
+                              </span>
+                            </label>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    {selectedTags.size > 0 && (
+                      <div className="mt-3 border-t border-ink/10 pt-2.5 pr-1">
+                        <button
+                          type="button"
+                          onClick={clearTags}
+                          className="text-[11px] uppercase tracking-[0.22em] text-whisper hover:text-ink"
+                        >
+                          clear all
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Panel: currently reading */}
+          <div
+            role="tabpanel"
+            id="panel-reading"
+            aria-labelledby="tab-reading"
+            hidden={tab !== "reading"}
+            className={tab !== "reading" ? "hidden" : ""}
+          >
+            <ul className="m-0 p-0 list-none">
+              {filteredReading.length === 0 && (
+                <li className="text-sm text-whisper py-3 italic">
+                  nothing matches this filter.
+                </li>
+              )}
+              {filteredReading.map((book, i) => (
+                <li
+                  key={`${book.title}-${book.author}`}
+                  className={`border-b border-ink/10 pb-10 md:pb-12 ${
+                    i === 0 ? "" : "pt-10 md:pt-12"
+                  } last:border-b-0`}
+                >
+                  <p className="text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-whisper leading-relaxed mb-3 md:mb-4">
+                    {book.tags.join(" · ")}
+                  </p>
+                  <p className="font-display italic text-2xl md:text-3xl text-ink leading-snug mb-2.5">
+                    {book.title}
+                    <span className="text-whisper not-italic font-normal"> — </span>
+                    <span className="text-whisper text-lg md:text-xl not-italic font-normal">
+                      {book.author}
+                    </span>
+                  </p>
+                  <p className="text-sm text-whisper/80 leading-relaxed">
+                    {book.goodreadsRating} on goodreads
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Panel: finished */}
+          <div
+            role="tabpanel"
+            id="panel-finished"
+            aria-labelledby="tab-finished"
+            hidden={tab !== "finished"}
+            className={tab !== "finished" ? "hidden" : ""}
+          >
+            <ul className="m-0 p-0 list-none">
+              {filteredFinished.length === 0 && (
+                <li className="text-sm text-whisper py-3 italic">
+                  nothing matches this filter.
+                </li>
+              )}
+              {filteredFinished.map((book, i) => (
+                <li
+                  key={`${book.title}-${book.author}`}
+                  className={`border-b border-ink/10 pb-10 md:pb-12 ${
+                    i === 0 ? "" : "pt-10 md:pt-12"
+                  } last:border-b-0`}
+                >
+                  <p className="text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-whisper leading-relaxed mb-3 md:mb-4">
+                    {book.tags.join(" · ")}
+                  </p>
+                  <p className="font-display italic text-2xl md:text-3xl text-ink leading-snug mb-2.5">
+                    {book.title}
+                    <span className="text-whisper not-italic font-normal"> — </span>
+                    <span className="text-whisper text-lg md:text-xl not-italic font-normal">
+                      {book.author}
+                    </span>
+                  </p>
+                  <p className="text-sm text-whisper/80 leading-relaxed mb-1">
+                    {book.goodreadsRating} on goodreads
+                  </p>
+                  {book.reflection ? (
+                    <p className="font-poem mt-4 text-[16px] md:text-[17px] text-ink/80 italic leading-[1.7] max-w-[58ch] text-pretty">
+                      {book.reflection}
+                    </p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-16 md:mt-20">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.24em] text-whisper hover:text-ink transition-colors duration-300"
+            >
+              <ArrowLeft size={14} strokeWidth={1.5} />
+              back home
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <SiteFooter />
     </main>
   );
 }
