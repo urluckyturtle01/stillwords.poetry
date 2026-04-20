@@ -136,3 +136,12 @@ export function nextPoem(currentId: string): FeaturedPoem {
   const next = (i + 1) % featuredPoems.length;
   return featuredPoems[next];
 }
+
+/**
+ * Pick a random featured poem — used on each page refresh so the homepage
+ * shows a different breath every visit.
+ */
+export function randomPoem(): FeaturedPoem {
+  const i = Math.floor(Math.random() * featuredPoems.length);
+  return featuredPoems[i];
+}

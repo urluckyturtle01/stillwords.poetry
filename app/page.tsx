@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import HeroWatercolor from "./components/HeroWatercolor";
 import RevealLines from "./components/RevealLines";
@@ -11,11 +11,10 @@ import WatercolorBackdrop from "./components/WatercolorBackdrop";
 import {
   type FeaturedPoem,
   featuredPoems,
-  nextPoem,
-  selectFeaturedPoem,
+  randomPoem,
 } from "@/data/poems";
 
-const initialPoem: FeaturedPoem = selectFeaturedPoem(new Date(0));
+const initialPoem: FeaturedPoem = featuredPoems[0];
 
 const worldCards = [
   {
@@ -44,16 +43,10 @@ const worldCards = [
 export default function Home() {
   const reduced = useReducedMotion();
   const [poem, setPoem] = useState<FeaturedPoem>(initialPoem);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setPoem(selectFeaturedPoem(new Date()));
-    setMounted(true);
+    setPoem(randomPoem());
   }, []);
-
-  function cycle() {
-    setPoem((p) => nextPoem(p.id));
-  }
 
   return (
     <main className="relative min-h-screen w-full text-ink">
@@ -91,33 +84,16 @@ export default function Home() {
             {poem.title}
           </motion.h1>
 
-          <AnimatePresence mode="wait">
-            <RevealLines
-              key={poem.id}
-              resetKey={poem.id}
-              lines={poem.lines}
-              delay={0.25}
-              stagger={0.11}
-              className="font-poem text-ink text-[22px] md:text-[28px] leading-[1.55] tracking-[0.005em] space-y-1"
-              lineClassName="text-balance"
-              as="span"
-            />
-          </AnimatePresence>
-
-          <motion.button
-            type="button"
-            onClick={cycle}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: mounted ? 1 : 0 }}
-            transition={{ duration: 0.8, delay: 0.6 + poem.lines.length * 0.11 }}
-            className="mt-12 md:mt-14 text-[12px] tracking-[0.22em] uppercase text-whisper hover:text-ink transition-colors duration-300 group"
-            aria-label="show another poem"
-          >
-            <span className="inline-block mr-2 transition-transform duration-500 group-hover:rotate-180">
-              ↻
-            </span>
-            another
-          </motion.button>
+          <RevealLines
+            key={poem.id}
+            resetKey={poem.id}
+            lines={poem.lines}
+            delay={0.25}
+            stagger={0.11}
+            className="font-poem text-ink text-[22px] md:text-[28px] leading-[1.55] tracking-[0.005em] space-y-1"
+            lineClassName="text-balance"
+            as="span"
+          />
         </div>
 
         {/* tagline + scroll cue */}
