@@ -72,7 +72,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.05 }}
             className="text-[11px] md:text-xs uppercase tracking-[0.28em] text-whisper mb-8"
           >
-            today&rsquo;s breath · {String(featuredPoems.findIndex((p) => p.id === poem.id) + 1).padStart(2, "0")}
+            today&rsquo;s breath
           </motion.p>
 
           <motion.h1
