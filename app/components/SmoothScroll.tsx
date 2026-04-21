@@ -25,8 +25,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
     rafId = requestAnimationFrame(raf);
 
+    const onLock = () => lenis.stop();
+    const onUnlock = () => lenis.start();
+    window.addEventListener("stillwords:scroll-lock", onLock);
+    window.addEventListener("stillwords:scroll-unlock", onUnlock);
+
     return () => {
       cancelAnimationFrame(rafId);
+      window.removeEventListener("stillwords:scroll-lock", onLock);
+      window.removeEventListener("stillwords:scroll-unlock", onUnlock);
       lenis.destroy();
     };
   }, [reduced]);

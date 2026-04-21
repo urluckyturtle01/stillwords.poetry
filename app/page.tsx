@@ -3,15 +3,18 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import CursorInk from "./components/CursorInk";
 import HeroWatercolor from "./components/HeroWatercolor";
-import RevealLines from "./components/RevealLines";
+import KeepableLines from "./components/KeepableLines";
+import KeptDrawer from "./components/KeptDrawer";
 import Signature from "./components/Signature";
 import SiteFooter from "./components/SiteFooter";
 import WatercolorBackdrop from "./components/WatercolorBackdrop";
+import { getDateLabel, getTimeOfDay } from "./lib/time";
 import {
   type FeaturedPoem,
   featuredPoems,
-  randomPoem,
+  selectFeaturedPoem,
 } from "@/data/poems";
 
 const initialPoem: FeaturedPoem = featuredPoems[0];
@@ -43,9 +46,14 @@ const worldCards = [
 export default function Home() {
   const reduced = useReducedMotion();
   const [poem, setPoem] = useState<FeaturedPoem>(initialPoem);
+  const [greeting, setGreeting] = useState<{ label: string; date: string } | null>(
+    null
+  );
 
   useEffect(() => {
-    setPoem(randomPoem());
+    const now = new Date();
+    setPoem(selectFeaturedPoem(now));
+    setGreeting({ label: getTimeOfDay(now).label, date: getDateLabel(now) });
   }, []);
 
   return (
@@ -58,22 +66,34 @@ export default function Home() {
         <Link href="/" aria-label="stillwords home" className="block">
           <img src="/logo.svg" alt="stillwords" className="w-24 md:w-28 opacity-90" />
         </Link>
-        <Signature />
+        <div className="flex items-center gap-5 md:gap-7">
+          <KeptDrawer />
+          <Signature />
+        </div>
       </header>
 
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 md:px-12 pt-28 pb-24 overflow-hidden">
         <HeroWatercolor />
+        <CursorInk />
 
-        <div className="relative w-full max-w-[640px] flex flex-col items-center text-center">
-          <motion.p
+        <div className="relative z-[2] w-full max-w-[640px] flex flex-col items-center text-center">
+          <motion.div
             initial={reduced ? { opacity: 0 } : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.05 }}
-            className="text-[11px] md:text-xs uppercase tracking-[0.28em] text-whisper mb-8"
+            className="mb-8 flex flex-col items-center gap-1.5"
           >
-            today&rsquo;s breath
-          </motion.p>
+            <p className="text-[11px] md:text-xs uppercase tracking-[0.28em] text-whisper">
+              {greeting ? greeting.label : "today\u2019s breath"}
+            </p>
+            <p
+              className="text-[10px] md:text-[11px] uppercase tracking-[0.32em] text-whisper/70"
+              suppressHydrationWarning
+            >
+              {greeting ? greeting.date : "\u00a0"}
+            </p>
+          </motion.div>
 
           <motion.h1
             initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
@@ -84,15 +104,16 @@ export default function Home() {
             {poem.title}
           </motion.h1>
 
-          <RevealLines
+          <KeepableLines
             key={poem.id}
             resetKey={poem.id}
+            poemId={poem.id}
+            poemTitle={poem.title}
             lines={poem.lines}
             delay={0.25}
             stagger={0.11}
             className="font-poem text-ink text-[22px] md:text-[28px] leading-[1.55] tracking-[0.005em] space-y-1"
             lineClassName="text-balance"
-            as="span"
           />
         </div>
 

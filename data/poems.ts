@@ -113,20 +113,33 @@ export const featuredPoems: FeaturedPoem[] = [
   },
 ];
 
-/** Days since 1970-01-01 in UTC — same value globally for ~24h */
-function utcDayIndex(date: Date): number {
-  return Math.floor(date.getTime() / 86_400_000);
+/** Local-time yyyy-mm-dd key — rolls over at the visitor's own midnight. */
+function localDateKey(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+/** Stable, tiny string hash (djb2-ish). */
+function hashString(s: string): number {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
 }
 
 /**
- * Pick a featured poem for a given date — deterministic, same for every visitor
- * for the duration of a UTC day. Cycles calmly through the list.
+ * Pick a featured poem for a given date — deterministic and stable for the
+ * whole local day. Two visits the same day (same browser timezone) get the
+ * same poem; tomorrow gets a new one.
  */
 export function selectFeaturedPoem(date: Date = new Date()): FeaturedPoem {
   if (featuredPoems.length === 0) {
     throw new Error("featuredPoems is empty");
   }
-  const index = utcDayIndex(date) % featuredPoems.length;
+  const index = hashString(localDateKey(date)) % featuredPoems.length;
   return featuredPoems[index];
 }
 
