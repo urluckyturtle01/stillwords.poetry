@@ -2,7 +2,7 @@ export const poet = {
   signatureLine:
     "i write the things i don't know how to say out loud.",
   hand: [
-    "i'm not a famous poet. i'm a person who writes mostly in the morning, mostly in lowercase, and mostly about the things that don't need to be solved.",
+    "i'm a person who writes mostly in the morning, mostly in lowercase, and mostly about the things that don't need to be solved.",
     "i started stillwords because the loudness was getting expensive. these are the lines i would have whispered to a friend, if a friend were sitting close enough.",
     "the work is small on purpose. nothing extra. nothing loud. just what remains after the noise.",
   ],
