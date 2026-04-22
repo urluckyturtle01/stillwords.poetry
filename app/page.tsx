@@ -6,9 +6,8 @@ import { useEffect, useState } from "react";
 import CursorInk from "./components/CursorInk";
 import HeroWatercolor from "./components/HeroWatercolor";
 import KeepableLines from "./components/KeepableLines";
-import KeptDrawer from "./components/KeptDrawer";
-import Signature from "./components/Signature";
 import SiteFooter from "./components/SiteFooter";
+import SiteHeader from "./components/SiteHeader";
 import WatercolorBackdrop from "./components/WatercolorBackdrop";
 import { getDateLabel, getTimeOfDay } from "./lib/time";
 import {
@@ -61,16 +60,7 @@ export default function Home() {
       {/* fixed paper for the whole page (hero gets its own animated layer) */}
       <WatercolorBackdrop variant={1} intensity={0.45} fixed />
 
-      {/* top chrome */}
-      <header className="absolute top-0 left-0 right-0 z-20 px-6 md:px-12 pt-6 md:pt-8 flex items-center justify-between">
-        <Link href="/" aria-label="stillwords home" className="block">
-          <img src="/logo.svg" alt="stillwords" className="w-24 md:w-28 opacity-90" />
-        </Link>
-        <div className="flex items-center gap-5 md:gap-7">
-          <KeptDrawer />
-          <Signature />
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 md:px-12 pt-28 pb-24 overflow-hidden">

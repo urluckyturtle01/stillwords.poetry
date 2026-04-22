@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import Signature from "../components/Signature";
 import SiteFooter from "../components/SiteFooter";
+import SiteHeader from "../components/SiteHeader";
 import WatercolorBackdrop from "../components/WatercolorBackdrop";
 import { currentlyReading, finished } from "@/data/books";
 import { bookTags, type BookTag } from "@/data/tags";
@@ -73,12 +73,7 @@ export default function BooksThatStayedPage() {
     <main className="relative min-h-screen w-full text-ink">
       <WatercolorBackdrop variant={4} intensity={0.4} fixed />
 
-      <header className="absolute top-0 left-0 right-0 z-20 px-6 md:px-12 pt-6 md:pt-8 flex items-center justify-between">
-        <Link href="/" aria-label="back to stillwords home" className="block">
-          <img src="/logo.svg" alt="stillwords" className="w-24 md:w-28 opacity-90" />
-        </Link>
-        <Signature />
-      </header>
+      <SiteHeader />
 
       <section className="relative px-6 md:px-12 pt-32 md:pt-40 pb-12">
         <div className="mx-auto max-w-3xl">

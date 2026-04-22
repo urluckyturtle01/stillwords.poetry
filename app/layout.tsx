@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter_Tight } from "next/font/google";
 import "./globals.css";
+import AnnouncementBar from "./components/AnnouncementBar";
 import SmoothScroll from "./components/SmoothScroll";
 
 const serif = Cormorant_Garamond({
@@ -66,6 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className="font-sans bg-paper text-ink">
+        <AnnouncementBar />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
