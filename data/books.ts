@@ -255,14 +255,5 @@ export const finished: FinishedBook[] = [
     tags: ["inner life", "essays"],
   },
 
-  // -------- CHETAN (LAST) --------
-  {
-    title: "2 states: the story of my marriage",
-    author: "chetan bhagat",
-    goodreadsRating: "3.44",
-    amazonUrl: amazonSearchUrl("2 States", "Chetan Bhagat"),
-    myRating: "1/5",
-    finishedOn: "jun 5, 2024",
-    tags: ["fiction"],
-  },
+  
 ];
