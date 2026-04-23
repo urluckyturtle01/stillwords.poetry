@@ -1,0 +1,37 @@
+---
+description: Consult the graphify knowledge graph before exploring the codebase
+alwaysApply: true
+---
+
+# Use the graphify map before grep
+
+This repo has a pre-built knowledge graph in `graphify-out/`. For any non-trivial code task (anything touching 2+ files, refactors, "where is X", "how does Y work", architectural questions), **read `graphify-out/report.md` first** before reaching for `Grep`, `Glob`, or `SemanticSearch`.
+
+## Why
+
+The report names every community (e.g. *"Daily poem rotation & date-anchored hero"*, *"Kept-lines storage hook"*), lists the god nodes, and surfaces non-obvious connections (duplicates, rationale links, hyperedges) that grep cannot see. Skipping it wastes tokens on exploration that's already done.
+
+## How to use it
+
+1. **Start with `graphify-out/report.md`** — the *Communities*, *God Nodes*, and *Hyperedges* sections give you the right files to open in one shot.
+2. **For deep queries**, also load `graphify-out/graph.json` — it has every node, edge (with `confidence` + `source_file`), and `community_labels`.
+3. **Then read only the source files** the graph points at. Don't grep the whole repo if a community already lists the relevant 4-6 files.
+4. **Trust the AMBIGUOUS / INFERRED flags** — when the report flags an edge as AMBIGUOUS, verify it before acting on it.
+
+## When to skip the graph
+
+- Single-file edits where the user named the file.
+- Pure UI/copy tweaks inside one component.
+- Trivial questions answerable from the open file.
+
+## Keeping the graph fresh
+
+After substantive structural changes (new files, renamed components, new routes), tell the user the graph is stale and offer to re-run:
+
+```bash
+.venv/bin/graphify .   # full rebuild
+# or, faster, only what changed:
+.venv/bin/graphify . --update
+```
+
+The `manifest.json` tracks file mtimes so `--update` only re-extracts changed files.
