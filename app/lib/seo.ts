@@ -167,20 +167,11 @@ export const quietEnoughMetadata: Metadata = {
       "a small book of seven pieces written for stillness. by stillwords. ebook + paperback.",
     type: "book",
     url: "/quiet-enough",
-    images: [
-      {
-        url: "/book-cover.jpg",
-        width: 1200,
-        height: 1600,
-        alt: "quiet enough — seven pieces of stillness, by stillwords",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `quiet enough — by ${SITE_NAME}`,
     description: "seven pieces of stillness. ebook + paperback.",
-    images: ["/book-cover.jpg"],
   },
   alternates: { canonical: "/quiet-enough" },
 };
