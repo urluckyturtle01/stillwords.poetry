@@ -2,6 +2,8 @@ import Link from "next/link";
 import Signature from "./components/Signature";
 import WatercolorBackdrop from "./components/WatercolorBackdrop";
 
+export { notFoundMetadata as metadata } from "./lib/seo";
+
 export default function NotFound() {
   return (
     <main className="relative min-h-screen w-full text-ink flex flex-col">
