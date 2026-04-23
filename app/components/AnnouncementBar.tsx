@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
-const INSTAGRAM_URL = "https://instagram.com/stillwords.poetry";
+const INSTAGRAM_URL = "https://www.instagram.com/p/DXcFb6jE71u";
 
 /**
  * A thin, world-class announcement strip that sits above SiteHeader on every
