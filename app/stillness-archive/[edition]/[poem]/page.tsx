@@ -7,13 +7,22 @@ import SiteHeader from "../../../components/SiteHeader";
 import WatercolorBackdrop from "../../../components/WatercolorBackdrop";
 import PoemReaderNav from "../../../components/PoemReaderNav";
 import { instagramUrl } from "../../../../types/stillness-archive";
-import { getPoem, getPoemNeighbours } from "../../../lib/archive";
+import {
+  getEditions,
+  getPoem,
+  getPoemNeighbours,
+} from "../../../lib/archive";
 import { SITE_NAME } from "../../../lib/seo";
 
-// always render on request — db is the source of truth
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const editions = await getEditions();
+  return editions.flatMap((e) =>
+    e.poems.map((p) => ({ edition: e.slug, poem: p.slug }))
+  );
+}
 
 export async function generateMetadata({
   params,

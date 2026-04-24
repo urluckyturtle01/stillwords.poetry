@@ -2,9 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "./lib/seo";
 import { getEditions } from "./lib/archive";
 
-// always rebuild from db so new editions/poems show up immediately
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();

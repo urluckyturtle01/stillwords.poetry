@@ -7,13 +7,16 @@ import SiteHeader from "../../components/SiteHeader";
 import WatercolorBackdrop from "../../components/WatercolorBackdrop";
 import EditionBentoGrid from "../../components/EditionBentoGrid";
 import { formatReleaseDate } from "../../../types/stillness-archive";
-import { getEditionBySlug } from "../../lib/archive";
+import { getEditionBySlug, getEditions } from "../../lib/archive";
 import { SITE_NAME } from "../../lib/seo";
 
-// always render on request — db is the source of truth
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const editions = await getEditions();
+  return editions.map((e) => ({ edition: e.slug }));
+}
 
 export async function generateMetadata({
   params,
