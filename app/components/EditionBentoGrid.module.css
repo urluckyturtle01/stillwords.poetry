@@ -1,0 +1,65 @@
+/* ───── mobile: single column, gentle height variation ───── */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.cell {
+  min-height: 200px;
+}
+
+.cell.tall {
+  min-height: 280px;
+}
+
+.cell.wide {
+  min-height: 180px;
+}
+
+/* ───── md+: 12-col × 4-row bento, two mirrored blocks of 5 cards ─────
+
+   block 1 — vertical card on the right
+   Cols:   1 2 3 4 5 6 7 8 9 A B C
+   Row 1:  a a a a b b b b m m m m
+   Row 2:  c c c c d d d d m m m m
+
+   block 2 — vertical card on the left
+   Row 3:  n n n n e e e e f f f f
+   Row 4:  n n n n g g g g h h h h
+
+   sizes (cols × rows):
+     a, b, c, d, e, f, g, h  →  4×1 = 4  (wide horizontal)
+     m, n                    →  4×2 = 8  (tall vertical)
+   ────────────────────────────────────────────── */
+
+@media (min-width: 768px) {
+  .grid {
+    gap: 1.25rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(190px, auto));
+    grid-template-areas:
+      "a a a a b b b b m m m m"
+      "c c c c d d d d m m m m"
+      "n n n n e e e e f f f f"
+      "n n n n g g g g h h h h";
+  }
+
+  .cell,
+  .cell.tall,
+  .cell.wide {
+    min-height: 0;
+  }
+
+  .cell.a { grid-area: a; }
+  .cell.b { grid-area: b; }
+  .cell.c { grid-area: c; }
+  .cell.d { grid-area: d; }
+  .cell.e { grid-area: e; }
+  .cell.f { grid-area: f; }
+  .cell.g { grid-area: g; }
+  .cell.h { grid-area: h; }
+  .cell.m { grid-area: m; }
+  .cell.n { grid-area: n; }
+}

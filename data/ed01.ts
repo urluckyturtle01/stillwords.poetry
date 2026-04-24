@@ -1,0 +1,210 @@
+import type { ArchivePoem } from "./stillness-archive";
+
+/**
+ * Issue 01 — dummy poems.
+ *
+ * Replace these with the actual curated pieces for May 1, 2026.
+ * Keep each `preview` as a *standalone fragment* (no ellipsis) — it's
+ * what the poem card teases from the bento grid.
+ */
+export const ed01: ArchivePoem[] = [
+  {
+    slug: "the-room-you-left",
+    title: "the room you left",
+    author: { name: "priya nair", instagramHandle: "priyawrites" },
+    lines: [
+      "i thought silence",
+      "was an absence.",
+      "",
+      "i didn't know it could shape",
+      "the room you left.",
+      "",
+      "now every doorway leans inward,",
+      "as if listening",
+      "for the weight of a voice",
+      "it once learned by heart.",
+    ],
+    preview: [
+      "i thought silence was an absence.",
+      "i didn't know it could shape",
+      "the room you left.",
+    ],
+  },
+  {
+    slug: "dusk-without-applause",
+    title: "dusk, without applause",
+    author: { name: "amaan qureshi", instagramHandle: "amaan.writes" },
+    lines: [
+      "the sun goes down",
+      "the way old men leave parties —",
+      "early, quietly,",
+      "and without taking anything.",
+      "",
+      "some evenings",
+      "that's the only grace",
+      "i can manage.",
+    ],
+    preview: [
+      "the sun goes down",
+      "the way old men leave parties —",
+      "early, quietly.",
+    ],
+  },
+  {
+    slug: "small-hours",
+    title: "you, in the small hours",
+    author: { name: "leila ito", instagramHandle: "leila.ink" },
+    lines: [
+      "at 3 a.m.",
+      "the mind forgets how to lie",
+      "and remembers everything",
+      "you asked it to carry.",
+      "",
+      "the dark makes no promises.",
+      "that is why",
+      "we begin to trust it.",
+    ],
+    preview: [
+      "at 3 a.m.",
+      "the mind forgets how to lie",
+      "and remembers everything.",
+    ],
+  },
+  {
+    slug: "what-the-kettle-knew",
+    title: "what the kettle knew",
+    author: { name: "raghav menon", instagramHandle: "raghav.writes" },
+    lines: [
+      "the kettle knew a kindness",
+      "the house had not yet named:",
+      "",
+      "that waiting, too,",
+      "is a kind of warmth.",
+      "",
+      "my mother knew this first.",
+      "i am only writing it down.",
+    ],
+    preview: [
+      "the kettle knew a kindness",
+      "the house had not yet named.",
+    ],
+  },
+  {
+    slug: "instructions-for-a-quiet-monday",
+    title: "instructions for a quiet monday",
+    author: { name: "sofia delgado", instagramHandle: "sofiadel.writes" },
+    lines: [
+      "wake without apology.",
+      "let the coffee be ordinary.",
+      "wear something",
+      "the week hasn't ruined yet.",
+      "",
+      "at eleven,",
+      "stand by the window",
+      "and let the light",
+      "do most of the talking.",
+    ],
+    preview: [
+      "wake without apology.",
+      "let the coffee be ordinary.",
+    ],
+  },
+  {
+    slug: "if-silence-had-a-mother",
+    title: "if silence had a mother",
+    author: { name: "teo ramírez", instagramHandle: "teo.quill" },
+    lines: [
+      "if silence had a mother",
+      "she would be a woman",
+      "who has learned not to need answers",
+      "by the end of most sentences.",
+      "",
+      "she would kiss your forehead",
+      "the way language never will.",
+    ],
+    preview: [
+      "if silence had a mother",
+      "she would be a woman",
+      "who has learned not to need answers.",
+    ],
+  },
+  {
+    slug: "names-we-never-learned",
+    title: "the names we never learned to say",
+    author: { name: "hana patel", instagramHandle: "hana.poetic" },
+    lines: [
+      "there are names in me",
+      "i still pronounce like prayers",
+      "i forgot halfway through.",
+      "",
+      "i hold them anyway.",
+      "that, too,",
+      "is a kind of keeping.",
+    ],
+    preview: [
+      "there are names in me",
+      "i still pronounce like prayers",
+      "i forgot halfway through.",
+    ],
+  },
+  {
+    slug: "letter-to-the-weather",
+    title: "a letter to the weather",
+    author: { name: "jun okafor", instagramHandle: "jun.writes" },
+    lines: [
+      "dear weather,",
+      "thank you for never pretending.",
+      "",
+      "you do not apologize for rain",
+      "and you do not ask",
+      "if the field would prefer",
+      "something gentler.",
+      "",
+      "teach me that.",
+    ],
+    preview: [
+      "dear weather,",
+      "thank you for never pretending.",
+    ],
+  },
+  {
+    slug: "slow-enough-to-be-forgiven",
+    title: "slow enough to be forgiven",
+    author: { name: "mira lindgren", instagramHandle: "mira.stillwords" },
+    lines: [
+      "i am trying to walk",
+      "slow enough",
+      "to be forgiven",
+      "",
+      "for all the rooms",
+      "i rushed through",
+      "before i knew",
+      "they were holy.",
+    ],
+    preview: [
+      "i am trying to walk",
+      "slow enough to be forgiven.",
+    ],
+  },
+  {
+    slug: "how-to-stay",
+    title: "how to stay",
+    author: { name: "kai abebe", instagramHandle: "kai.notquiet" },
+    lines: [
+      "stay the way the river stays —",
+      "by moving, always,",
+      "but never leaving.",
+      "",
+      "stay the way lamplight stays",
+      "in a room no one is using.",
+      "",
+      "stay",
+      "for the sake of being found.",
+    ],
+    preview: [
+      "stay the way the river stays —",
+      "by moving, always,",
+      "but never leaving.",
+    ],
+  },
+];
