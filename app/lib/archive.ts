@@ -2,8 +2,10 @@ import { cache } from "react";
 import { sql } from "./db";
 import type {
   ArchivePoem,
+  ArchivePoet,
   Edition,
   EditionStatus,
+  PoetPoem,
 } from "../../types/stillness-archive";
 
 /* ──────────────────────────────────────────────
@@ -28,6 +30,15 @@ interface PoemRow {
   position: number;
   poet_name: string;
   poet_handle: string;
+  poet_slug: string;
+}
+
+interface PoetRow {
+  slug: string;
+  name: string;
+  instagram_handle: string;
+  bio: string | null;
+  location: string | null;
 }
 
 /* ──────────────────────────────────────────────
@@ -40,8 +51,22 @@ function rowToPoem(r: PoemRow): ArchivePoem {
     title: r.title,
     lines: r.lines,
     preview: r.preview,
-    author: { name: r.poet_name, instagramHandle: r.poet_handle },
+    author: {
+      name: r.poet_name,
+      instagramHandle: r.poet_handle,
+      slug: r.poet_slug,
+    },
     ...(r.note ? { note: r.note } : {}),
+  };
+}
+
+function rowToPoet(r: PoetRow): ArchivePoet {
+  return {
+    slug: r.slug,
+    name: r.name,
+    instagramHandle: r.instagram_handle,
+    bio: r.bio,
+    location: r.location,
   };
 }
 
@@ -78,6 +103,7 @@ export const getEditions = cache(async (): Promise<Edition[]> => {
     select
       e.slug              as edition_slug,
       p.slug, p.title, p.lines, p.preview, p.note, p.position,
+      pt.slug             as poet_slug,
       pt.name             as poet_name,
       pt.instagram_handle as poet_handle
     from poems p
@@ -113,6 +139,7 @@ export const getEditionBySlug = cache(
     const poems = (await sql`
       select
         p.slug, p.title, p.lines, p.preview, p.note, p.position,
+        pt.slug             as poet_slug,
         pt.name             as poet_name,
         pt.instagram_handle as poet_handle
       from poems p
@@ -148,4 +175,86 @@ export function getPoemNeighbours(
     next:
       index < edition.poems.length - 1 ? edition.poems[index + 1] : null,
   };
+}
+
+/* ──────────────────────────────────────────────
+   poets
+   ────────────────────────────────────────────── */
+
+export const getPoets = cache(async (): Promise<ArchivePoet[]> => {
+  const rows = (await sql`
+    select slug, name, instagram_handle, bio, location
+    from poets
+    order by name asc
+  `) as PoetRow[];
+  return rows.map(rowToPoet);
+});
+
+export const getPoetBySlug = cache(
+  async (
+    slug: string
+  ): Promise<{ poet: ArchivePoet; poems: PoetPoem[] } | undefined> => {
+    const poets = (await sql`
+      select slug, name, instagram_handle, bio, location
+      from poets
+      where slug = ${slug}
+      limit 1
+    `) as PoetRow[];
+
+    if (poets.length === 0) return undefined;
+
+    const rows = (await sql`
+      select
+        p.slug, p.title, p.lines, p.preview, p.note, p.position,
+        pt.slug             as poet_slug,
+        pt.name             as poet_name,
+        pt.instagram_handle as poet_handle,
+        e.slug              as edition_slug,
+        e.label             as edition_label,
+        e.number            as edition_number
+      from poems p
+      join poets         pt on pt.id = p.poet_id
+      left join editions e  on e.id  = p.edition_id
+      where pt.slug = ${slug}
+      order by
+        case when p.edition_id is null then 1 else 0 end,
+        e.number desc nulls last,
+        p.position asc nulls last,
+        p.title asc
+    `) as Array<
+      PoemRow & {
+        edition_slug: string | null;
+        edition_label: string | null;
+        edition_number: number | null;
+      }
+    >;
+
+    const poems: PoetPoem[] = rows.map((r) => ({
+      ...rowToPoem(r),
+      editionSlug: r.edition_slug,
+      editionLabel: r.edition_label,
+      editionNumber: r.edition_number,
+    }));
+
+    return { poet: rowToPoet(poets[0]), poems };
+  }
+);
+
+/* ──────────────────────────────────────────────
+   single poem in the poet's catalog (used by
+   /poets/[slug]/[poem] reader)
+   ────────────────────────────────────────────── */
+
+export async function getPoetPoem(
+  poetSlug: string,
+  poemSlug: string
+): Promise<
+  | { poet: ArchivePoet; poems: PoetPoem[]; index: number }
+  | undefined
+> {
+  const match = await getPoetBySlug(poetSlug);
+  if (!match) return undefined;
+  const index = match.poems.findIndex((p) => p.slug === poemSlug);
+  if (index === -1) return undefined;
+  return { ...match, index };
 }

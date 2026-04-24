@@ -6,9 +6,11 @@ import { useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface PoemReaderNavProps {
-  editionSlug: string;
-  prevSlug: string | null;
-  nextSlug: string | null;
+  /** absolute href to escape back to (e.g. "/stillness-archive/issue-01" or "/poets/priya-nair") */
+  parentHref: string;
+  /** absolute hrefs for prev / next poems, or null if not available */
+  prevHref: string | null;
+  nextHref: string | null;
   /** e.g. "3 / 10" */
   counter: string;
 }
@@ -19,12 +21,12 @@ interface PoemReaderNavProps {
  * Keyboard:
  *   ← — previous poem
  *   → — next poem
- *   esc — back to the edition page
+ *   esc — back to the parent (edition or poet)
  */
 export default function PoemReaderNav({
-  editionSlug,
-  prevSlug,
-  nextSlug,
+  parentHref,
+  prevHref,
+  nextHref,
   counter,
 }: PoemReaderNavProps) {
   const router = useRouter();
@@ -42,18 +44,18 @@ export default function PoemReaderNav({
         return;
       }
 
-      if (event.key === "ArrowLeft" && prevSlug) {
-        router.push(`/stillness-archive/${editionSlug}/${prevSlug}`);
-      } else if (event.key === "ArrowRight" && nextSlug) {
-        router.push(`/stillness-archive/${editionSlug}/${nextSlug}`);
+      if (event.key === "ArrowLeft" && prevHref) {
+        router.push(prevHref);
+      } else if (event.key === "ArrowRight" && nextHref) {
+        router.push(nextHref);
       } else if (event.key === "Escape") {
-        router.push(`/stillness-archive/${editionSlug}`);
+        router.push(parentHref);
       }
     }
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [editionSlug, prevSlug, nextSlug, router]);
+  }, [parentHref, prevHref, nextHref, router]);
 
   const linkBase =
     "group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] transition-colors duration-300";
@@ -65,11 +67,8 @@ export default function PoemReaderNav({
       aria-label="poem navigation"
       className="mt-16 md:mt-24 flex items-center justify-between gap-6 border-t border-ink/10 pt-8"
     >
-      {prevSlug ? (
-        <Link
-          href={`/stillness-archive/${editionSlug}/${prevSlug}`}
-          className={`${linkBase} text-whisper hover:text-ink`}
-        >
+      {prevHref ? (
+        <Link href={prevHref} className={`${linkBase} text-whisper hover:text-ink`}>
           <ArrowLeft
             size={14}
             strokeWidth={1.5}
@@ -88,11 +87,8 @@ export default function PoemReaderNav({
         {counter}
       </span>
 
-      {nextSlug ? (
-        <Link
-          href={`/stillness-archive/${editionSlug}/${nextSlug}`}
-          className={`${linkBase} text-whisper hover:text-ink`}
-        >
+      {nextHref ? (
+        <Link href={nextHref} className={`${linkBase} text-whisper hover:text-ink`}>
           next
           <ArrowRight
             size={14}

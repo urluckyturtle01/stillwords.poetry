@@ -7,74 +7,80 @@ import SiteHeader from "../../../components/SiteHeader";
 import WatercolorBackdrop from "../../../components/WatercolorBackdrop";
 import PoemReaderNav from "../../../components/PoemReaderNav";
 import { instagramUrl } from "../../../../types/stillness-archive";
-import {
-  getEditions,
-  getPoem,
-  getPoemNeighbours,
-} from "../../../lib/archive";
+import { getPoets, getPoetBySlug, getPoetPoem } from "../../../lib/archive";
 import { SITE_NAME } from "../../../lib/seo";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const editions = await getEditions();
-  return editions.flatMap((e) =>
-    e.poems.map((p) => ({ edition: e.slug, poem: p.slug }))
-  );
+  const poets = await getPoets();
+  const params: { slug: string; poem: string }[] = [];
+  for (const p of poets) {
+    const match = await getPoetBySlug(p.slug);
+    if (!match) continue;
+    for (const poem of match.poems) {
+      params.push({ slug: p.slug, poem: poem.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ edition: string; poem: string }>;
+  params: Promise<{ slug: string; poem: string }>;
 }): Promise<Metadata> {
-  const { edition: editionSlug, poem: poemSlug } = await params;
-  const match = await getPoem(editionSlug, poemSlug);
+  const { slug, poem: poemSlug } = await params;
+  const match = await getPoetPoem(slug, poemSlug);
 
   if (!match) {
     return { title: "poem not found", robots: { index: false, follow: false } };
   }
 
-  const { poem, edition } = match;
+  const { poet, poems, index } = match;
+  const poem = poems[index];
   const firstLine = poem.preview[0] ?? poem.lines[0] ?? "";
-  const title = `${poem.title} — ${poem.author.name}`;
+  const title = `${poem.title} — ${poet.name}`;
   const description = firstLine
-    ? `${firstLine} — ${poem.author.name}, in ${edition.label} of the stillness archive.`
-    : `a poem by ${poem.author.name}, in ${edition.label} of the stillness archive.`;
-  const url = `/stillness-archive/${edition.slug}/${poem.slug}`;
+    ? `${firstLine} — ${poet.name}, in the stillness archive.`
+    : `a poem by ${poet.name}, in the stillness archive.`;
+  const url = `/poets/${poet.slug}/${poem.slug}`;
 
   return {
     title,
     description,
     openGraph: {
-      title: `${poem.title} — ${poem.author.name} · ${SITE_NAME}`,
+      title: `${poem.title} — ${poet.name} · ${SITE_NAME}`,
       description: firstLine || description,
       type: "article",
       url,
-      authors: [poem.author.name],
+      authors: [poet.name],
     },
     twitter: {
-      title: `${poem.title} — ${poem.author.name}`,
+      title: `${poem.title} — ${poet.name}`,
       description: firstLine || description,
     },
     alternates: { canonical: url },
   };
 }
 
-export default async function PoemPage({
+export default async function PoetPoemPage({
   params,
 }: {
-  params: Promise<{ edition: string; poem: string }>;
+  params: Promise<{ slug: string; poem: string }>;
 }) {
-  const { edition: editionSlug, poem: poemSlug } = await params;
-  const match = await getPoem(editionSlug, poemSlug);
+  const { slug, poem: poemSlug } = await params;
+  const match = await getPoetPoem(slug, poemSlug);
 
   if (!match) notFound();
 
-  const { edition, poem, index } = match;
-  const { prev, next } = getPoemNeighbours(edition, index);
-  const counter = `${index + 1} / ${edition.poems.length}`;
+  const { poet, poems, index } = match;
+  const poem = poems[index];
+  const prev = index > 0 ? poems[index - 1] : null;
+  const next = index < poems.length - 1 ? poems[index + 1] : null;
+  const counter = `${index + 1} / ${poems.length}`;
+  const parentHref = `/poets/${poet.slug}`;
 
   return (
     <main className="relative min-h-screen w-full text-ink flex flex-col">
@@ -85,7 +91,7 @@ export default async function PoemPage({
       <section className="relative flex-1 px-6 md:px-12 pt-32 md:pt-40 pb-16">
         <div className="mx-auto w-full max-w-2xl">
           <Link
-            href={`/stillness-archive/${edition.slug}`}
+            href={parentHref}
             className="group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-whisper hover:text-ink transition-colors duration-300"
           >
             <ArrowLeft
@@ -93,14 +99,11 @@ export default async function PoemPage({
               strokeWidth={1.5}
               className="transition-transform duration-300 group-hover:-translate-x-0.5"
             />
-            {edition.label.toLowerCase()}
+            back to profile
           </Link>
 
           {/* ───── title ───── */}
           <header className="mt-14 md:mt-20 text-center">
-            <p className="text-[11px] uppercase tracking-[0.28em] text-whisper mb-6">
-              {edition.label} · poem {index + 1}
-            </p>
             <h1 className="font-display italic text-[34px] md:text-[54px] leading-[1.06] text-ink text-balance">
               {poem.title}
             </h1>
@@ -122,20 +125,14 @@ export default async function PoemPage({
             <p className="text-[12px] uppercase tracking-[0.26em] text-whisper">
               by
             </p>
-            {poem.author.slug ? (
-              <Link
-                href={`/poets/${poem.author.slug}`}
-                className="font-display italic text-xl md:text-2xl text-ink underline decoration-transparent underline-offset-[6px] hover:decoration-ink/30 transition-all duration-300"
-              >
-                {poem.author.name}
-              </Link>
-            ) : (
-              <p className="font-display italic text-xl md:text-2xl text-ink">
-                {poem.author.name}
-              </p>
-            )}
+            <Link
+              href={parentHref}
+              className="font-display italic text-xl md:text-2xl text-ink underline decoration-transparent underline-offset-[6px] hover:decoration-ink/30 transition-all duration-300"
+            >
+              {poet.name}
+            </Link>
             <a
-              href={instagramUrl(poem.author.instagramHandle)}
+              href={instagramUrl(poet.instagramHandle)}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 text-[12px] text-whisper hover:text-ink transition-colors duration-300"
@@ -146,20 +143,16 @@ export default async function PoemPage({
                 className="opacity-70 group-hover:opacity-100 transition-opacity duration-300"
               />
               <span className="underline decoration-whisper/30 underline-offset-4 group-hover:decoration-ink">
-                @{poem.author.instagramHandle}
+                @{poet.instagramHandle}
               </span>
             </a>
           </footer>
 
           {/* ───── prev / counter / next ───── */}
           <PoemReaderNav
-            parentHref={`/stillness-archive/${edition.slug}`}
-            prevHref={
-              prev ? `/stillness-archive/${edition.slug}/${prev.slug}` : null
-            }
-            nextHref={
-              next ? `/stillness-archive/${edition.slug}/${next.slug}` : null
-            }
+            parentHref={parentHref}
+            prevHref={prev ? `/poets/${poet.slug}/${prev.slug}` : null}
+            nextHref={next ? `/poets/${poet.slug}/${next.slug}` : null}
             counter={counter}
           />
         </div>

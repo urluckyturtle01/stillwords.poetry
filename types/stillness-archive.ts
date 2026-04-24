@@ -8,6 +8,27 @@ export type ArchiveAuthor = {
   name: string;
   /** handle without the @ sign. e.g. "priyawrites" */
   instagramHandle: string;
+  /** url slug, e.g. "priya-nair". optional so existing data still works. */
+  slug?: string;
+};
+
+/* ──────────────────────────────────────────────
+   poet (full record from the poets table)
+   ────────────────────────────────────────────── */
+
+export type ArchivePoet = {
+  slug: string;
+  name: string;
+  instagramHandle: string;
+  bio: string | null;
+  location: string | null;
+};
+
+/** A poem with its (optional) edition context, used on the poet page. */
+export type PoetPoem = ArchivePoem & {
+  editionSlug: string | null;
+  editionLabel: string | null;
+  editionNumber: number | null;
 };
 
 export type ArchivePoem = {

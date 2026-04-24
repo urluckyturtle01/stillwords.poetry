@@ -161,11 +161,9 @@ function PoemCard({ poem, editionSlug, variant, wash }: PoemCardProps) {
       : poem.preview.slice(0, 2);
 
   return (
-    <Link
-      href={`/stillness-archive/${editionSlug}/${poem.slug}`}
-      aria-label={`read "${poem.title}" by ${poem.author.name}`}
-      className="group relative block h-full overflow-hidden rounded-sm border border-ink/10 bg-paper/85 transition-all duration-500 hover:border-ink/25 hover:shadow-[0_18px_44px_-30px_rgba(31,27,22,0.4)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink/30 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-    >
+    // outer card is a non-interactive container so the author block can be
+    // its own link without nesting <a> inside <a>
+    <div className="group relative block h-full overflow-hidden rounded-sm border border-ink/10 bg-paper/85 transition-all duration-500 hover:border-ink/25 hover:shadow-[0_18px_44px_-30px_rgba(31,27,22,0.4)]">
       {/* watercolor wash — soft blurred color blobs behind content */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div
@@ -178,8 +176,17 @@ function PoemCard({ poem, editionSlug, variant, wash }: PoemCardProps) {
         />
       </div>
 
+      {/* whole-card link to the poem (sits behind the explicit author link) */}
+      <Link
+        href={`/stillness-archive/${editionSlug}/${poem.slug}`}
+        aria-label={`read "${poem.title}" by ${poem.author.name}`}
+        className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink/30 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+      >
+        <span className="sr-only">read poem</span>
+      </Link>
+
       {/* content */}
-      <div className="relative z-10 flex h-full flex-col justify-between p-6 md:p-7">
+      <div className="pointer-events-none relative z-20 flex h-full flex-col justify-between p-6 md:p-7">
         <div className="min-w-0">
           <h3
             className={`font-display italic text-ink text-balance ${titleClass}`}
@@ -197,14 +204,29 @@ function PoemCard({ poem, editionSlug, variant, wash }: PoemCardProps) {
         </div>
 
         <div className="mt-5 md:mt-6 flex items-end justify-between gap-3 min-w-0">
-          <div className="min-w-0 flex flex-col leading-tight">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-whisper group-hover:text-ink transition-colors duration-500 truncate">
-              {poem.author.name}
-            </span>
-            <span className="text-[11px] text-whisper/60 truncate">
-              @{poem.author.instagramHandle}
-            </span>
-          </div>
+          {poem.author.slug ? (
+            <Link
+              href={`/poets/${poem.author.slug}`}
+              aria-label={`view poems by ${poem.author.name}`}
+              className="pointer-events-auto group/author min-w-0 flex flex-col leading-tight focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink/30 rounded-sm"
+            >
+              <span className="text-[11px] uppercase tracking-[0.2em] text-whisper group-hover/author:text-ink transition-colors duration-500 truncate">
+                {poem.author.name}
+              </span>
+              <span className="text-[11px] text-whisper/60 group-hover/author:text-ink/80 transition-colors duration-500 truncate">
+                @{poem.author.instagramHandle}
+              </span>
+            </Link>
+          ) : (
+            <div className="min-w-0 flex flex-col leading-tight">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-whisper group-hover:text-ink transition-colors duration-500 truncate">
+                {poem.author.name}
+              </span>
+              <span className="text-[11px] text-whisper/60 truncate">
+                @{poem.author.instagramHandle}
+              </span>
+            </div>
+          )}
 
           <ArrowUpRight
             size={16}
@@ -213,6 +235,6 @@ function PoemCard({ poem, editionSlug, variant, wash }: PoemCardProps) {
           />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

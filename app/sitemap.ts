@@ -1,12 +1,18 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "./lib/seo";
-import { getEditions } from "./lib/archive";
+import { getEditions, getPoetBySlug, getPoets } from "./lib/archive";
 
 export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
-  const editions = await getEditions();
+  const [editions, poets] = await Promise.all([getEditions(), getPoets()]);
+  const poetCatalogs = await Promise.all(
+    poets.map(async (p) => ({
+      poet: p,
+      poems: (await getPoetBySlug(p.slug))?.poems ?? [],
+    }))
+  );
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified, changeFrequency: "daily", priority: 1 },
@@ -32,5 +38,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   );
 
-  return [...staticRoutes, ...editionRoutes, ...poemRoutes];
+  const poetRoutes: MetadataRoute.Sitemap = poets.map((p) => ({
+    url: `${SITE_URL}/poets/${p.slug}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }));
+
+  const poetPoemRoutes: MetadataRoute.Sitemap = poetCatalogs.flatMap(
+    ({ poet, poems }) =>
+      poems.map((p) => ({
+        url: `${SITE_URL}/poets/${poet.slug}/${p.slug}`,
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.4,
+      }))
+  );
+
+  return [
+    ...staticRoutes,
+    ...editionRoutes,
+    ...poemRoutes,
+    ...poetRoutes,
+    ...poetPoemRoutes,
+  ];
 }
