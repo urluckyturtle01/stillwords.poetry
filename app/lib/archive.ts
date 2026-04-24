@@ -1,5 +1,4 @@
 import { cache } from "react";
-import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "./db";
 import type {
   ArchivePoem,
@@ -64,7 +63,6 @@ function rowToEdition(e: EditionRow, poems: ArchivePoem[]): Edition {
    ────────────────────────────────────────────── */
 
 export const getEditions = cache(async (): Promise<Edition[]> => {
-  noStore();
   const editions = (await sql`
     select
       number, slug, label, subtitle, status,
@@ -101,7 +99,6 @@ export const getEditions = cache(async (): Promise<Edition[]> => {
 
 export const getEditionBySlug = cache(
   async (slug: string): Promise<Edition | undefined> => {
-    noStore();
     const editions = (await sql`
       select
         number, slug, label, subtitle, status,
