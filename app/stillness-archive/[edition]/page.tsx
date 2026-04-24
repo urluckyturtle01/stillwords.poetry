@@ -7,18 +7,13 @@ import SiteHeader from "../../components/SiteHeader";
 import WatercolorBackdrop from "../../components/WatercolorBackdrop";
 import EditionBentoGrid from "../../components/EditionBentoGrid";
 import { formatReleaseDate } from "../../../types/stillness-archive";
-import { getEditionBySlug, getEditions } from "../../lib/archive";
+import { getEditionBySlug } from "../../lib/archive";
 import { SITE_NAME } from "../../lib/seo";
 
-// pre-render known editions at build time, regenerate every 60s,
-// and let new editions render on-demand without a redeploy
-export const revalidate = 60;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const editions = await getEditions();
-  return editions.map((e) => ({ edition: e.slug }));
-}
+// always render on request — db is the source of truth
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 export async function generateMetadata({
   params,
