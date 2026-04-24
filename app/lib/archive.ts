@@ -4,7 +4,7 @@ import type {
   ArchivePoem,
   Edition,
   EditionStatus,
-} from "../../data/stillness-archive";
+} from "../../types/stillness-archive";
 
 /* ──────────────────────────────────────────────
    row shapes coming back from postgres

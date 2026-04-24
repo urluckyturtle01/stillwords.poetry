@@ -6,7 +6,7 @@ import SiteFooter from "../../components/SiteFooter";
 import SiteHeader from "../../components/SiteHeader";
 import WatercolorBackdrop from "../../components/WatercolorBackdrop";
 import EditionBentoGrid from "../../components/EditionBentoGrid";
-import { formatReleaseDate } from "../../../data/stillness-archive";
+import { formatReleaseDate } from "../../../types/stillness-archive";
 import { getEditionBySlug, getEditions } from "../../lib/archive";
 import { SITE_NAME } from "../../lib/seo";
 

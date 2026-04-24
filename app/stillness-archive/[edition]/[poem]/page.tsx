@@ -6,7 +6,7 @@ import SiteFooter from "../../../components/SiteFooter";
 import SiteHeader from "../../../components/SiteHeader";
 import WatercolorBackdrop from "../../../components/WatercolorBackdrop";
 import PoemReaderNav from "../../../components/PoemReaderNav";
-import { instagramUrl } from "../../../../data/stillness-archive";
+import { instagramUrl } from "../../../../types/stillness-archive";
 import {
   getEditions,
   getPoem,

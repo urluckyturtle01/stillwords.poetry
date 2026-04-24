@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import type { ArchivePoem, Edition } from "../../data/stillness-archive";
+import type { ArchivePoem, Edition } from "../../types/stillness-archive";
 import styles from "./EditionBentoGrid.module.css";
 
 /* ──────────────────────────────────────────────

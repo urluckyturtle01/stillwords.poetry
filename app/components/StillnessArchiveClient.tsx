@@ -9,7 +9,7 @@ import WatercolorBackdrop from "./WatercolorBackdrop";
 import {
   type Edition,
   formatReleaseDate,
-} from "../../data/stillness-archive";
+} from "../../types/stillness-archive";
 
 interface UpcomingEdition {
   label: string;
