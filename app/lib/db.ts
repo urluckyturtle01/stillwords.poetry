@@ -1,24 +1,31 @@
-import { neon } from "@neondatabase/serverless";
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 
-const url = process.env.DB_URL;
+let client: NeonQueryFunction<false, false> | null = null;
 
-if (!url || url.trim() === "") {
-  throw new Error(
-    "DB_URL is not set or is empty. " +
-      "Locally: add it to .env.local (postgresql://...?sslmode=require). " +
-      "On Vercel: Settings → Environment Variables → make sure DB_URL " +
-      "is enabled for Production, Preview AND Development, then redeploy."
-  );
+function getClient(): NeonQueryFunction<false, false> {
+  if (client) return client;
+
+  const url = process.env.DB_URL;
+  if (!url || url.trim() === "") {
+    throw new Error(
+      "DB_URL is missing at runtime. " +
+        "On Vercel: Settings → Environment Variables → enable DB_URL " +
+        "for Production AND Preview AND Development, then redeploy."
+    );
+  }
+  if (!/^postgres(ql)?:\/\//.test(url)) {
+    throw new Error(
+      `DB_URL is malformed. It must start with "postgresql://". ` +
+        `Got something starting with "${url.slice(0, 12)}".`
+    );
+  }
+
+  client = neon(url);
+  return client;
 }
 
-if (!/^postgres(ql)?:\/\//.test(url)) {
-  throw new Error(
-    `DB_URL doesn't look like a postgres URL (got: "${url.slice(0, 20)}..."). ` +
-      "Expected format: postgresql://user:pass@host/db?sslmode=require"
-  );
-}
-
-/** Shared Neon HTTP SQL client. Used by every server component that reads
- *  from the stillness archive. With `force-dynamic` pages this runs on
- *  every request, so DB_URL must be present at runtime, not just at build. */
-export const sql = neon(url);
+/** Tagged-template proxy that lazily resolves the Neon client on first use,
+ *  so a missing DB_URL throws inside our try/catch instead of at import time. */
+export const sql = ((...args: Parameters<NeonQueryFunction<false, false>>) => {
+  return getClient()(...args);
+}) as NeonQueryFunction<false, false>;
