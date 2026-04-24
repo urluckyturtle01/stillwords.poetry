@@ -1,7 +1,7 @@
-import { ed01 } from "./ed01";
-
 /* ──────────────────────────────────────────────
-   types
+   shared types + pure helpers for the
+   stillness archive. data lives in postgres now —
+   see app/lib/archive.ts for the queries.
    ────────────────────────────────────────────── */
 
 export type ArchiveAuthor = {
@@ -19,7 +19,7 @@ export type ArchivePoem = {
   /** standalone fragment shown on the bento card (no ellipsis) */
   preview: string[];
   author: ArchiveAuthor;
-  /** optional translator / editor note, reserved for future issues */
+  /** optional translator / editor note */
   note?: string;
 };
 
@@ -34,60 +34,15 @@ export type Edition = {
   label: string;
   /** one-liner subheadline shown under the heading on the edition page */
   subtitle: string;
-  /** ISO date, local to publisher */
+  /** ISO date "YYYY-MM-DD", local to publisher */
   releaseDate: string;
   status: EditionStatus;
   poems: ArchivePoem[];
 };
 
 /* ──────────────────────────────────────────────
-   registry — one entry per edition, oldest first
+   pure helpers (no data access)
    ────────────────────────────────────────────── */
-
-export const editions: Edition[] = [
-  {
-    number: 1,
-    slug: "issue-01",
-    label: "Issue 01",
-    subtitle: "ten poems on what stays when nothing does.",
-    releaseDate: "2026-05-01",
-    status: "live",
-    poems: ed01,
-  },
-];
-
-/* ──────────────────────────────────────────────
-   helpers
-   ────────────────────────────────────────────── */
-
-export function getEditionBySlug(slug: string): Edition | undefined {
-  return editions.find((e) => e.slug === slug);
-}
-
-export function getPoem(
-  editionSlug: string,
-  poemSlug: string
-):
-  | { edition: Edition; poem: ArchivePoem; index: number }
-  | undefined {
-  const edition = getEditionBySlug(editionSlug);
-  if (!edition) return undefined;
-  const index = edition.poems.findIndex((p) => p.slug === poemSlug);
-  if (index === -1) return undefined;
-  return { edition, poem: edition.poems[index], index };
-}
-
-/** What comes before and after a poem within its edition. */
-export function getPoemNeighbours(
-  edition: Edition,
-  index: number
-): { prev: ArchivePoem | null; next: ArchivePoem | null } {
-  return {
-    prev: index > 0 ? edition.poems[index - 1] : null,
-    next:
-      index < edition.poems.length - 1 ? edition.poems[index + 1] : null,
-  };
-}
 
 /** "May 1, 2026" — stable, timezone-safe format for a YYYY-MM-DD string. */
 export function formatReleaseDate(iso: string): string {

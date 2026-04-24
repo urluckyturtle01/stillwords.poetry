@@ -6,17 +6,15 @@ import SiteFooter from "../../components/SiteFooter";
 import SiteHeader from "../../components/SiteHeader";
 import WatercolorBackdrop from "../../components/WatercolorBackdrop";
 import EditionBentoGrid from "../../components/EditionBentoGrid";
-import {
-  editions,
-  formatReleaseDate,
-  getEditionBySlug,
-} from "../../../data/stillness-archive";
+import { formatReleaseDate } from "../../../data/stillness-archive";
+import { getEditionBySlug, getEditions } from "../../lib/archive";
 import { SITE_NAME } from "../../lib/seo";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const editions = await getEditions();
   return editions.map((e) => ({ edition: e.slug }));
 }
 
@@ -26,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ edition: string }>;
 }): Promise<Metadata> {
   const { edition: editionSlug } = await params;
-  const edition = getEditionBySlug(editionSlug);
+  const edition = await getEditionBySlug(editionSlug);
 
   if (!edition) {
     return { title: "edition not found", robots: { index: false, follow: false } };
@@ -59,7 +57,7 @@ export default async function EditionPage({
   params: Promise<{ edition: string }>;
 }) {
   const { edition: editionSlug } = await params;
-  const edition = getEditionBySlug(editionSlug);
+  const edition = await getEditionBySlug(editionSlug);
 
   if (!edition) notFound();
 

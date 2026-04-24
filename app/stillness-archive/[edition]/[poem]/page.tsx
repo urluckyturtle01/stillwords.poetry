@@ -6,18 +6,19 @@ import SiteFooter from "../../../components/SiteFooter";
 import SiteHeader from "../../../components/SiteHeader";
 import WatercolorBackdrop from "../../../components/WatercolorBackdrop";
 import PoemReaderNav from "../../../components/PoemReaderNav";
+import { instagramUrl } from "../../../../data/stillness-archive";
 import {
-  editions,
+  getEditions,
   getPoem,
   getPoemNeighbours,
-  instagramUrl,
-} from "../../../../data/stillness-archive";
+} from "../../../lib/archive";
 import { SITE_NAME } from "../../../lib/seo";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const editions = await getEditions();
   return editions.flatMap((e) =>
     e.poems.map((p) => ({ edition: e.slug, poem: p.slug }))
   );
@@ -29,7 +30,7 @@ export async function generateMetadata({
   params: Promise<{ edition: string; poem: string }>;
 }): Promise<Metadata> {
   const { edition: editionSlug, poem: poemSlug } = await params;
-  const match = getPoem(editionSlug, poemSlug);
+  const match = await getPoem(editionSlug, poemSlug);
 
   if (!match) {
     return { title: "poem not found", robots: { index: false, follow: false } };
@@ -67,7 +68,7 @@ export default async function PoemPage({
   params: Promise<{ edition: string; poem: string }>;
 }) {
   const { edition: editionSlug, poem: poemSlug } = await params;
-  const match = getPoem(editionSlug, poemSlug);
+  const match = await getPoem(editionSlug, poemSlug);
 
   if (!match) notFound();
 
