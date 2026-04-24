@@ -10,8 +10,10 @@ import { formatReleaseDate } from "../../../types/stillness-archive";
 import { getEditionBySlug, getEditions } from "../../lib/archive";
 import { SITE_NAME } from "../../lib/seo";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
+// pre-render known editions at build time, regenerate every 60s,
+// and let new editions render on-demand without a redeploy
+export const revalidate = 60;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const editions = await getEditions();

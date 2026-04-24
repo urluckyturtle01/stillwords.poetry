@@ -1,7 +1,8 @@
 import StillnessArchiveClient from "../components/StillnessArchiveClient";
 import { getEditions } from "../lib/archive";
 
-export const dynamic = "force-static";
+// re-fetch from postgres at most once a minute
+export const revalidate = 60;
 
 /* ──────────────────────────────────────────────
    upcoming editions teased on the index — these

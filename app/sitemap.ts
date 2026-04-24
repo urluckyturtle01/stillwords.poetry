@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "./lib/seo";
 import { getEditions } from "./lib/archive";
 
-export const dynamic = "force-static";
+// regenerate the sitemap when archive content changes
+export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
