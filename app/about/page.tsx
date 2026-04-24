@@ -7,12 +7,10 @@ import RevealLines from "../components/RevealLines";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
 import WatercolorBackdrop from "../components/WatercolorBackdrop";
-import { poet } from "@/data/poet";
-import { currentlyReading } from "@/data/books";
+import { stillwords } from "@/data/poet";
 
 export default function About() {
   const reduced = useReducedMotion();
-  const onDesk = currentlyReading[0];
 
   return (
     <main className="relative min-h-screen w-full text-ink">
@@ -37,19 +35,19 @@ export default function About() {
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
             className="font-display italic text-3xl md:text-5xl leading-[1.18] text-ink text-balance"
           >
-            {poet.signatureLine}
+            {stillwords.signatureLine}
           </motion.h1>
         </div>
       </section>
 
-      {/* THE HAND */}
+      {/* THE PRACTICE */}
       <section className="relative px-6 md:px-12 py-16 md:py-24">
         <div className="mx-auto max-w-3xl grid grid-cols-12 gap-6">
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.26em] text-whisper md:pt-2">
-            the hand
+            the practice
           </p>
           <div className="col-span-12 md:col-span-9 space-y-6">
-            {poet.hand.map((para, i) => (
+            {stillwords.practice.map((para, i) => (
               <motion.p
                 key={i}
                 initial={{ opacity: 0, y: 12 }}
@@ -73,7 +71,7 @@ export default function About() {
           </p>
           <div className="col-span-12 md:col-span-9">
             <RevealLines
-              lines={poet.rhythm}
+              lines={stillwords.rhythm}
               className="font-poem italic text-2xl md:text-3xl text-ink leading-[1.55] space-y-1"
               lineClassName="block text-balance"
               delay={0.1}
@@ -84,39 +82,14 @@ export default function About() {
         </div>
       </section>
 
-      {/* ON THE DESK */}
-      {onDesk && (
-        <section className="relative px-6 md:px-12 py-16 md:py-24">
-          <div className="mx-auto max-w-3xl grid grid-cols-12 gap-6">
-            <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.26em] text-whisper md:pt-2">
-              on the desk
-            </p>
-            <div className="col-span-12 md:col-span-9">
-              <p className="font-poem text-[19px] md:text-[21px] leading-[1.7] text-ink/90 max-w-[60ch]">
-                right now i&rsquo;m reading{" "}
-                <span className="italic">{onDesk.title}</span>
-                <span className="text-whisper"> — </span>
-                <span className="text-whisper">{onDesk.author}</span>.
-              </p>
-              <Link
-                href="/books-that-stayed"
-                className="mt-6 inline-block text-[12px] uppercase tracking-[0.24em] text-ink/80 hover:text-ink underline-offset-[6px] decoration-mist/0 hover:decoration-mist hover:underline"
-              >
-                books that stayed →
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* WHERE TO FIND HIM */}
+      {/* ELSEWHERE */}
       <section className="relative px-6 md:px-12 py-16 md:py-24">
         <div className="mx-auto max-w-3xl grid grid-cols-12 gap-6">
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.26em] text-whisper md:pt-2">
-            where to find him
+            elsewhere
           </p>
           <ul className="col-span-12 md:col-span-9 m-0 p-0 list-none divide-y divide-ink/10">
-            {poet.finding.map((f) => (
+            {stillwords.elsewhere.map((f) => (
               <li key={f.label} className="py-4 flex items-baseline justify-between gap-6">
                 <span className="text-[15px] text-whisper uppercase tracking-[0.18em]">
                   {f.label}

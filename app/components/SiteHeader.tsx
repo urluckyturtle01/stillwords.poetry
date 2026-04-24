@@ -13,10 +13,11 @@ interface SiteHeaderProps {
 }
 
 const navLinks: { href: string; label: string }[] = [
-  { href: "/about", label: "about" },
-  { href: "/quiet-enough", label: "quiet enough" },
-  { href: "/books-that-stayed", label: "books that stayed" },
   { href: "/stillness-archive", label: "stillness archive" },
+  //{ href: "/quiet-enough", label: "quiet enough" },
+  { href: "/about", label: "about" },
+  //{ href: "/books-that-stayed", label: "books that stayed" },
+  
 ];
 
 /**

@@ -1,18 +1,29 @@
-export const poet = {
-  signatureLine:
-    "i write the things i don't know how to say out loud.",
-  hand: [
-    "i'm a person who writes mostly in the morning, mostly in lowercase, and mostly about the things that don't need to be solved.",
-    "i started stillwords because the loudness was getting expensive. these are the lines i would have whispered to a friend, if a friend were sitting close enough.",
-    "the work is small on purpose. nothing extra. nothing loud. just what remains after the noise.",
+/**
+ * stillwords isn't a person and isn't a press.
+ * it's a small, slow, lowercase practice — a place to keep the
+ * quieter end of language. this file holds the words used on /about.
+ *
+ * the export is named `stillwords` (not `poet`) so the shape of the
+ * code matches the shape of the thing.
+ */
+
+export const stillwords = {
+  signatureLine: "what stays, when nothing else does.",
+
+  practice: [
+    "stillwords is small on purpose. lowercase. unhurried. written the way mornings happen — in fragments, in margins, in the space between two cups of tea.",
+    "nothing here is here to convince anyone of anything. the lines that survive a week are the ones that get kept. the rest are released.",
+    "no manifesto. no schedule. just the quieter end of language, gathered slowly.",
   ],
+
   rhythm: [
     "morning.",
     "tea.",
     "one window.",
     "one line at a time.",
   ],
-  finding: [
+
+  elsewhere: [
     {
       label: "instagram",
       value: "@stillwords.poetry",
