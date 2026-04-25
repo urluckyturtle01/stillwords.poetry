@@ -52,13 +52,19 @@ create table if not exists poems (
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now(),
 
+  -- a poem may belong to an edition (selected or not) or be an orphan.
+  -- if it has a position, it must be a valid 1..99 selected slot.
   constraint poems_position_paired check (
-    (edition_id is null and position is null) or
+    (edition_id is null     and position is null) or
+    (edition_id is not null and position is null) or
     (edition_id is not null and position between 1 and 99)
   ),
+  -- a poet may submit multiple poems to the same edition (some
+  -- selected, some honourable mentions). poem slugs and selected
+  -- positions stay unique per edition, but (edition_id, poet_id) is
+  -- intentionally NOT unique.
   unique (edition_id, slug),
-  unique (edition_id, position),
-  unique (edition_id, poet_id)
+  unique (edition_id, position)
 );
 
 create unique index if not exists poems_orphan_slug_idx
