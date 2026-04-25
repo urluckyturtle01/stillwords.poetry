@@ -67,7 +67,7 @@ export default function StillnessArchiveClient({
             className="mt-8 text-[15px] md:text-base text-whisper max-w-xl text-balance leading-relaxed"
           >
             a monthly gathering of ten poems, curated from quiet poets on
-            instagram — one edition at a time.
+            instagram.
           </motion.p>
         </div>
       </section>
@@ -221,8 +221,17 @@ export default function StillnessArchiveClient({
                 </span>
               </div>
               <p className="mt-4 text-[14px] md:text-[15px] italic text-whisper/70">
-                submissions opening soon.
+                submissions open.
               </p>
+              <a
+                href="https://www.instagram.com/p/DXcFb6jE71u/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-whisper/30 underline-offset-4 hover:decoration-ink hover:text-ink transition-colors duration-300"
+              >
+                submit yours
+              </a>
+              
             </motion.div>
           ))}
         </div>

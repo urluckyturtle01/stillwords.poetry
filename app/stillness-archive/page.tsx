@@ -10,8 +10,8 @@ export const dynamic = "force-static";
    ────────────────────────────────────────────── */
 
 const upcoming: { label: string; releaseDate: string }[] = [
-  { label: "Issue 02", releaseDate: "2026-06-01" },
-  { label: "Issue 03", releaseDate: "2026-07-01" },
+  { label: "Issue 01", releaseDate: "2026-05-01" },
+  //{ label: "Issue 02", releaseDate: "2026-06-01" },
 ];
 
 export default async function StillnessArchivePage() {

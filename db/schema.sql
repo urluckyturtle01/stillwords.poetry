@@ -64,6 +64,12 @@ create table if not exists poems (
 create unique index if not exists poems_orphan_slug_idx
   on poems (slug) where edition_id is null;
 
+-- ── per-poet slug uniqueness ──────────────────────────────────
+-- guarantees /poets/[slug]/[poem] is always unambiguous, no
+-- matter whether the poem is in an edition or orphan.
+create unique index if not exists poems_poet_slug_uniq
+  on poems (poet_id, slug);
+
 create index if not exists poems_edition_position_idx on poems (edition_id, position);
 create index if not exists poems_poet_idx              on poems (poet_id);
 create index if not exists editions_release_idx        on editions (release_date desc);
