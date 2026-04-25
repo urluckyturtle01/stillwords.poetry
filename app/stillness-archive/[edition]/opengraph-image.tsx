@@ -7,25 +7,6 @@ export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 export const dynamic = "force-static";
 
-export async function generateImageMetadata({
-  params,
-}: {
-  params: Promise<{ edition: string }>;
-}) {
-  const { edition: slug } = await params;
-  const edition = await getEditionBySlug(slug);
-  return [
-    {
-      id: "main",
-      contentType,
-      size,
-      alt: edition
-        ? `${edition.label} — stillness archive · stillwords`
-        : alt,
-    },
-  ];
-}
-
 export async function generateStaticParams() {
   const editions = await getEditions();
   return editions.map((e) => ({ edition: e.slug }));

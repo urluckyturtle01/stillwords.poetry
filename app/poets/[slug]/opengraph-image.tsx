@@ -7,23 +7,6 @@ export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 export const dynamic = "force-static";
 
-export async function generateImageMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const match = await getPoetBySlug(slug);
-  return [
-    {
-      id: "main",
-      contentType,
-      size,
-      alt: match ? `${match.poet.name} · stillwords` : alt,
-    },
-  ];
-}
-
 export async function generateStaticParams() {
   const poets = await getPoets();
   return poets.map((p) => ({ slug: p.slug }));
