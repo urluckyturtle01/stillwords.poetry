@@ -54,13 +54,13 @@ export default async function OG({
     );
   }
 
-  const poem = match.poems[match.index];
+  const found = match.poems[match.index];
 
   return new ImageResponse(
     <OgCard
       eyebrow={match.poet.name}
-      headline={poem.title.toLowerCase() + "."}
-      subheadline={poem.preview[0] ?? undefined}
+      headline={found.title.toLowerCase() + "."}
+      subheadline={found.preview[0] ?? undefined}
     />,
     { ...size }
   );
