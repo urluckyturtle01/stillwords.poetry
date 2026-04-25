@@ -51,6 +51,8 @@ export function OgCard({ eyebrow, headline, subheadline }: OgCardProps) {
           alignItems: "center",
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={LOGO} width={LOGO_W} height={LOGO_H} alt="" style={{ opacity: 0.85 }} />
         <span
           style={{
             fontSize: 22,
@@ -61,8 +63,6 @@ export function OgCard({ eyebrow, headline, subheadline }: OgCardProps) {
         >
           stillwords
         </span>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={LOGO} width={LOGO_W} height={LOGO_H} alt="" style={{ opacity: 0.85 }} />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 980 }}>
