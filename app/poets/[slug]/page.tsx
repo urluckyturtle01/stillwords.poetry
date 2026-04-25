@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Instagram } from "lucide-react";
 import SiteFooter from "../../components/SiteFooter";
 import SiteHeader from "../../components/SiteHeader";
 import WatercolorBackdrop from "../../components/WatercolorBackdrop";
@@ -92,6 +92,12 @@ export default async function PoetPage({
             aria-label={`${poet.name} on instagram — opens in a new tab`}
             className="group mt-6 md:mt-7 inline-flex items-center gap-2 font-poem italic text-[17px] md:text-[19px] text-whisper hover:text-ochre transition-colors duration-500 focus:outline-none focus-visible:ring-1 focus-visible:ring-ochre/50 rounded-sm px-1"
           >
+            <Instagram
+              size={16}
+              strokeWidth={1.4}
+              aria-hidden="true"
+              className="not-italic transition-colors duration-500"
+            />
             <span className="underline decoration-whisper/25 underline-offset-[6px] group-hover:decoration-ochre/60 transition-colors duration-500">
               @{poet.instagramHandle}
             </span>

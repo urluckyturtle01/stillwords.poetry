@@ -1,3 +1,5 @@
+import Separator from "./Separator";
+
 const outposts = [
   { label: "substack", href: "https://stillwordspoetry.substack.com/" },
   { label: "instagram", href: "https://instagram.com/stillwords.poetry" },
@@ -19,7 +21,7 @@ export default function SiteFooter({ minimal = false, className = "" }: SiteFoot
       <div className="mx-auto max-w-6xl">
         {!minimal && (
           <>
-            <div className="mb-10 md:mb-12 h-px w-full bg-ink/10" />
+            <Separator className="mb-10 md:mb-12" />
             <ul className="flex flex-wrap items-center gap-x-8 gap-y-3 text-sm md:text-[15px]">
               {outposts.map((o) => (
                 <li key={o.label}>

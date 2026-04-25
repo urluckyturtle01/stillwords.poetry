@@ -110,6 +110,7 @@ export const getEditions = cache(async (): Promise<Edition[]> => {
     join editions e on e.id = p.edition_id
     join poets    pt on pt.id = p.poet_id
     where p.edition_id is not null
+      and p.position   is not null
     order by e.number asc, p.position asc
   `) as Array<PoemRow & { edition_slug: string }>;
 
@@ -145,10 +146,38 @@ export const getEditionBySlug = cache(
       from poems p
       join poets pt on pt.id = p.poet_id
       where p.edition_id = (select id from editions where slug = ${slug})
+        and p.position   is not null
       order by p.position asc
     `) as PoemRow[];
 
     return rowToEdition(editions[0], poems.map(rowToPoem));
+  }
+);
+
+/* ──────────────────────────────────────────────
+   honourable mentions — poets who submitted a
+   poem for an edition but did NOT have any poem
+   selected in that edition's 10.
+   ────────────────────────────────────────────── */
+
+export const getEditionMentions = cache(
+  async (slug: string): Promise<ArchivePoet[]> => {
+    const rows = (await sql`
+      select distinct
+        pt.slug, pt.name, pt.instagram_handle, pt.bio, pt.location
+      from poems p
+      join poets pt on pt.id = p.poet_id
+      where p.edition_id = (select id from editions where slug = ${slug})
+        and p.position is null
+        and not exists (
+          select 1 from poems p2
+          where p2.edition_id = p.edition_id
+            and p2.poet_id    = p.poet_id
+            and p2.position is not null
+        )
+      order by pt.name asc
+    `) as PoetRow[];
+    return rows.map(rowToPoet);
   }
 );
 

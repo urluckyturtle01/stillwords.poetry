@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import SiteFooter from "../../components/SiteFooter";
 import SiteHeader from "../../components/SiteHeader";
 import WatercolorBackdrop from "../../components/WatercolorBackdrop";
 import EditionBentoGrid from "../../components/EditionBentoGrid";
-import { formatReleaseDate } from "../../../types/stillness-archive";
-import { getEditionBySlug, getEditions } from "../../lib/archive";
+import Separator from "../../components/Separator";
+import {
+  formatReleaseDate,
+  instagramUrl,
+} from "../../../types/stillness-archive";
+import {
+  getEditionBySlug,
+  getEditionMentions,
+  getEditions,
+} from "../../lib/archive";
 import { SITE_NAME } from "../../lib/seo";
 
 export const dynamic = "force-static";
@@ -57,7 +65,10 @@ export default async function EditionPage({
   params: Promise<{ edition: string }>;
 }) {
   const { edition: editionSlug } = await params;
-  const edition = await getEditionBySlug(editionSlug);
+  const [edition, mentions] = await Promise.all([
+    getEditionBySlug(editionSlug),
+    getEditionMentions(editionSlug),
+  ]);
 
   if (!edition) notFound();
 
@@ -100,20 +111,56 @@ export default async function EditionPage({
       </section>
 
       {/* ───── bento grid of poems ───── */}
-      <section className="relative px-6 md:px-12 pb-24 md:pb-32">
+      <section
+        className={`relative px-6 md:px-12 ${
+          mentions.length > 0 ? "pb-14 md:pb-20" : "pb-24 md:pb-32"
+        }`}
+      >
         <EditionBentoGrid edition={edition} />
-
-        <div className="mx-auto w-full max-w-6xl mt-14 md:mt-20 flex items-center justify-between text-[11px] uppercase tracking-[0.22em] text-whisper">
-          <span>
-            {edition.poems.length} poems ·{" "}
-            {Array.from(new Set(edition.poems.map((p) => p.author.name))).length}{" "}
-            poets
-          </span>
-          <span className="italic normal-case tracking-normal text-[12px]">
-            curated by {SITE_NAME}
-          </span>
-        </div>
       </section>
+
+      {/* ───── honourable mentions ───── */}
+      {mentions.length > 0 ? (
+        <section className="relative px-6 md:px-12 pb-24 md:pb-32">
+          <div className="mx-auto w-full max-w-6xl">
+            <Separator />
+            <p className="mt-10 md:mt-12 text-[11px] uppercase tracking-[0.28em] text-whisper">
+              honourable mentions
+            </p>
+            <p className="mt-3 text-[12px] italic text-whisper/80">
+              gentle thanks to the poets whose words moved us this edition.
+            </p>
+            <ul className="mt-10 md:mt-12 grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2 md:gap-y-8 lg:grid-cols-3">
+              {mentions.map((p) => (
+                <li key={p.slug} className="flex flex-col items-start">
+                  <Link
+                    href={`/poets/${p.slug}`}
+                    className="font-display italic text-xl md:text-2xl text-ink underline decoration-transparent underline-offset-[6px] hover:decoration-ink/30 transition-all duration-300"
+                  >
+                    {p.name}
+                  </Link>
+                  <a
+                    href={instagramUrl(p.instagramHandle)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${p.name} on instagram — opens in a new tab`}
+                    className="group mt-1.5 inline-flex items-center gap-1.5 font-poem italic text-[14px] md:text-[15px] text-whisper hover:text-ochre transition-colors duration-500 focus:outline-none focus-visible:ring-1 focus-visible:ring-ochre/50 rounded-sm"
+                  >
+                    <span className="underline decoration-whisper/20 underline-offset-[5px] group-hover:decoration-ochre/60 transition-colors duration-500">
+                      @{p.instagramHandle}
+                    </span>
+                    <ArrowUpRight
+                      size={13}
+                      strokeWidth={1.4}
+                      className="transition-transform duration-500 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
 
       <SiteFooter />
     </main>
