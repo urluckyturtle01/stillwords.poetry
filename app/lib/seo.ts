@@ -83,16 +83,17 @@ export const rootMetadata: Metadata = {
 export const aboutMetadata: Metadata = {
   title: "about",
   description:
-    "the hand behind stillwords — a poet writing slow, lowercase poems for quiet minds. mornings, tea, one window, one line at a time.",
+    "stillwords is a small, slow, lowercase practice — a place to keep the quieter end of language. mornings, tea, one window, one line at a time.",
   openGraph: {
     title: `about — ${SITE_NAME}`,
-    description: "the hand behind stillwords. mornings, tea, one window, one line at a time.",
-    type: "profile",
+    description:
+      "a small, slow, lowercase practice. the quieter end of language, gathered slowly.",
+    type: "website",
     url: "/about",
   },
   twitter: {
     title: `about — ${SITE_NAME}`,
-    description: "the hand behind stillwords.",
+    description: "a small, slow, lowercase practice.",
   },
   alternates: { canonical: "/about" },
 };
